@@ -52,16 +52,21 @@
       </div>
       <div class="accessCard">
         <div class="accessHead"><div><b data-i18n="Choose your chat">Choose your chat</b><p class="muted" data-i18n="Select Free or Paid before you start matching.">Select Free or Paid before you start matching.</p></div><span class="authPill">FREE / PAID</span></div>
-        <div class="accessGrid">
-          <button id="freeOption" class="accessOption active" type="button"><strong data-i18n="🆓 Free Chat">🆓 Free Chat</strong><small data-i18n="Random matching · No payment">Random matching · No payment</small></button>
-          <button id="paidOption" class="accessOption" type="button"><strong data-i18n="♀ Paid Match">♀ Paid Match</strong><small data-i18n="Premium matching · Subscription">Premium matching · Subscription</small></button>
-        </div>
+        <label class="selectCardLabel" for="chatTypeSelect">Chat type</label>
+        <select id="chatTypeSelect" class="matchSelect">
+          <option value="free">🆓 Free Chat</option>
+          <option value="paid">💎 Paid Match</option>
+        </select>
         <div id="paidPlans" class="paidPlans hidden">
-          <button type="button" data-plan="₹50 · 1 Day"><b>₹50</b><span data-i18n="1 Day">1 Day</span></button>
-          <button type="button" data-plan="₹200 · 1 Week"><b>₹200</b><span data-i18n="1 Week · Best Value">1 Week · Best Value</span></button>
-          <button type="button" data-plan="₹599 · 1 Month"><b>₹599</b><span data-i18n="1 Month">1 Month</span></button>
+          <label class="selectCardLabel" for="paidPlanSelect">Paid plan</label>
+          <select id="paidPlanSelect" class="matchSelect">
+            <option value="">Select a paid plan</option>
+            <option value="₹50 · 1 Day">₹50 · 1 Day</option>
+            <option value="₹200 · 1 Week">₹200 · 1 Week · Best Value</option>
+            <option value="₹599 · 1 Month">₹599 · 1 Month</option>
+          </select>
           <p id="planMsg" class="formMsg"></p>
-          <button id="payNowBtn" class="payNowBtn hidden" type="button" data-i18n="Pay Now →">Pay Now →</button>
+          <button id="payNowBtn" class="payNowBtn hidden" type="button">Pay Now →</button>
         </div>
       </div>
 
@@ -94,7 +99,7 @@
           <p>Looking for someone from your selected country.</p>
         </div>
         <div class="matchInfoOverlay">
-          <div class="countryLine"><span id="matchGenderIcon">♂</span><span id="matchFlag">🇮🇳</span><span id="matchCountry">India</span></div>
+          <div class="matchIdentity"><div id="otherUserAvatar" class="otherUserAvatar matchAvatar">👤</div><div><div id="matchName" class="matchName">Veyora user</div><div class="countryLine"><span id="matchGenderIcon">♂</span><span id="matchFlag">🇮🇳</span><span id="matchCountry">India</span></div></div></div>
         </div>
       </div>
       <div class="localVideo"><video id="cameraPreview" autoplay muted playsinline></video>
@@ -169,7 +174,12 @@
         <label>Name<input id="accountNameInput" type="text" maxlength="40"></label>
         <label>Date of birth<input id="accountDobInput" type="date"></label>
         <div><span>Gender</span><div class="accountGender"><button type="button" data-account-gender="Male">♂ Male</button><button type="button" data-account-gender="Female">♀ Female</button><button type="button" data-account-gender="Other">⚧ Other</button></div></div>
-        <div class="accountRow"><span>Plan</span><b id="accountPlan">Free Chat</b></div>
+        <div class="accountRow"><span>Active plan</span><b id="accountPlan">Free Chat</b></div>
+        <div class="accountRow"><span>Plan status</span><b id="accountPlanStatus">Not active</b></div>
+        <div class="accountRow"><span>Purchase date</span><b id="accountPurchaseDate">—</b></div>
+        <div class="accountRow"><span>Expires</span><b id="accountExpiryDate">—</b></div>
+        <div class="accountRow"><span>Days used</span><b id="accountDaysUsed">0 days</b></div>
+        <div class="accountRow"><span>Days remaining</span><b id="accountDaysRemaining">0 days</b></div>
         <div class="accountRow"><span>Account information</span><b id="accountLoginMethod">Saved on this device</b></div>
       </div>
       <div class="accountActions"><button id="saveAccountBtn" class="bigBtn" type="button">Save changes</button><button id="accountLogoutBtn" class="logoutAction" type="button">Log out</button></div>

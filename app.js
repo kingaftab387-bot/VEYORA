@@ -29,17 +29,18 @@ function setAccess(type){
  chatAccess=type;
  accountSet('veyoraAccess',type);
  const free=type==='free';
- $('#freeOption').classList.toggle('active',free);
- $('#paidOption').classList.toggle('active',!free);
+ const chatType=$('#chatTypeSelect');
+ if(chatType) chatType.value=free?'free':'paid';
  $('#paidPlans').classList.toggle('hidden',free);
  if(free){
    selectedPlan='';
    accountRemove('veyoraPlan');
+   if($('#paidPlanSelect')) $('#paidPlanSelect').value='';
    $('#planMsg').textContent='Free Chat selected.';
    $('#payNowBtn').classList.add('hidden');
  }else{
-   selectedPlan=accountGet('veyoraPlan','')||'';
-   document.querySelectorAll('[data-plan]').forEach(x=>x.classList.toggle('selected',x.dataset.plan===selectedPlan));
+   selectedPlan=accountGet('veyoraPlan','')||accountGet('veyoraPaidPlan','')||'';
+   if($('#paidPlanSelect')) $('#paidPlanSelect').value=selectedPlan;
    $('#planMsg').textContent=selectedPlan?'Selected: '+selectedPlan:'Choose a paid plan.';
    $('#payNowBtn').classList.toggle('hidden',!selectedPlan);
  }
@@ -48,6 +49,61 @@ function setAccess(type){
 function selectedPlanAmount(){
  const m=String(selectedPlan||'').match(/₹\s*(\d+)/);
  return m?Number(m[1]):0;
+}
+
+function planDurationDays(plan){
+ const text=String(plan||'');
+ if(text.includes('1 Day')) return 1;
+ if(text.includes('1 Week')) return 7;
+ if(text.includes('1 Month')) return 30;
+ return 0;
+}
+function getPlanInfo(){
+ const plan=accountGet('veyoraPaidPlan','')||accountGet('veyoraPlan','');
+ const paidAtRaw=accountGet('veyoraPaidAt','');
+ const duration=planDurationDays(plan);
+ if(!plan||!paidAtRaw||!duration) return {plan:'Free Chat',active:false,duration:0};
+ const paidAt=new Date(paidAtRaw);
+ if(Number.isNaN(paidAt.getTime())) return {plan,active:false,duration,paidAt:null};
+ const expiry=new Date(paidAt.getTime()+duration*86400000);
+ const now=new Date();
+ const active=now<expiry;
+ const elapsed=Math.max(0,Math.min(duration,Math.floor((now-paidAt)/86400000)));
+ const remaining=Math.max(0,Math.ceil((expiry-now)/86400000));
+ return {plan,active,duration,paidAt,expiry,elapsed,remaining};
+}
+function formatPlanDate(d){
+ if(!d||Number.isNaN(new Date(d).getTime())) return '—';
+ return new Intl.DateTimeFormat('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(d));
+}
+function refreshAccountPlanDetails(){
+ const info=getPlanInfo();
+ const planEl=$('#accountPlan'), statusEl=$('#accountPlanStatus'), purchaseEl=$('#accountPurchaseDate'), expiryEl=$('#accountExpiryDate'), usedEl=$('#accountDaysUsed'), remainingEl=$('#accountDaysRemaining');
+ if(planEl) planEl.textContent=info.plan||'Free Chat';
+ if(statusEl) statusEl.textContent=info.active?'Active':'Not active';
+ if(purchaseEl) purchaseEl.textContent=info.paidAt?formatPlanDate(info.paidAt):'—';
+ if(expiryEl) expiryEl.textContent=info.expiry?formatPlanDate(info.expiry):'—';
+ if(usedEl) usedEl.textContent=(info.elapsed||0)+' '+((info.elapsed||0)===1?'day':'days');
+ if(remainingEl) remainingEl.textContent=(info.remaining||0)+' '+((info.remaining||0)===1?'day':'days');
+}
+function compressProfileImage(file){
+ return new Promise((resolve,reject)=>{
+   const reader=new FileReader();
+   reader.onerror=()=>reject(new Error('Could not read image.'));
+   reader.onload=()=>{
+     const img=new Image();
+     img.onerror=()=>reject(new Error('Could not open image.'));
+     img.onload=()=>{
+       const max=480, scale=Math.min(1,max/Math.max(img.width,img.height));
+       const w=Math.max(1,Math.round(img.width*scale)),h=Math.max(1,Math.round(img.height*scale));
+       const c=document.createElement('canvas'); c.width=w;c.height=h;
+       const ctx=c.getContext('2d'); ctx.drawImage(img,0,0,w,h);
+       resolve(c.toDataURL('image/jpeg',0.72));
+     };
+     img.src=reader.result;
+   };
+   reader.readAsDataURL(file);
+ });
 }
 
 function openPaymentModal(){
@@ -101,11 +157,13 @@ async function startRazorpayPayment(){
          const verified=await verifyResponse.json().catch(()=>({}));
          if(!verifyResponse.ok || !verified.ok || !verified.verified) throw new Error(verified.error||'Payment verification failed.');
          accountSet('veyoraPlan',selectedPlan);
+         accountSet('veyoraPaidPlan',selectedPlan);
          accountSet('veyoraPaidPaymentId',verified.payment_id);
          accountSet('veyoraPaidPlan',selectedPlan);
          accountSet('veyoraPaidAt',new Date().toISOString());
          chatAccess='paid';
          setAccess('paid');
+         refreshAccountPlanDetails();
          closePaymentModal();
          alert('Payment successful. Paid Match is now active. Tap “Start Video Chat” to continue.');
        }catch(err){
@@ -194,7 +252,7 @@ async function init(){
  $('#googleBtn').onclick=()=>oauth('google');
  $('#facebookBtn').onclick=()=>oauth('facebook');
 
- $('#profileNext').onclick=saveProfile;$('#startBtn').onclick=startVideo;$('#freeOption').onclick=()=>setAccess('free');$('#paidOption').onclick=()=>setAccess('paid');document.querySelectorAll('[data-plan]').forEach(b=>b.onclick=()=>{selectedPlan=b.dataset.plan;accountSet('veyoraPlan',selectedPlan);document.querySelectorAll('[data-plan]').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');$('#planMsg').textContent='Selected: '+selectedPlan;$('#payNowBtn').classList.remove('hidden')});$('#payNowBtn').onclick=openPaymentModal;$('#paymentClose').onclick=closePaymentModal;$('#razorpayPayBtn').onclick=startRazorpayPayment;$('#exitVideo').onclick=exitVideo;$('#nextBtn').onclick=startVideo;
+ $('#profileNext').onclick=saveProfile;$('#startBtn').onclick=startVideo;$('#chatTypeSelect').onchange=e=>setAccess(e.target.value);$('#paidPlanSelect').onchange=e=>{selectedPlan=e.target.value;accountSet('veyoraPlan',selectedPlan);$('#planMsg').textContent=selectedPlan?'Selected: '+selectedPlan:'Choose a paid plan.';$('#payNowBtn').classList.toggle('hidden',!selectedPlan)};$('#payNowBtn').onclick=openPaymentModal;$('#paymentClose').onclick=closePaymentModal;$('#razorpayPayBtn').onclick=startRazorpayPayment;$('#exitVideo').onclick=exitVideo;$('#nextBtn').onclick=startVideo;
  setAccess(accountGet('veyoraAccess')==='paid'?'paid':'free');
  $('#settingsBtn').onclick=()=>togglePanel('settingsPanel');
  $('#chatBtn').onclick=toggleChatComposer;
@@ -235,7 +293,7 @@ async function init(){
 };
  $('#switchCamBtn').onclick=switchCamera;$('#micBtn').onclick=toggleMic;$('#camBtn').onclick=toggleCam;$('#profileBtn').onclick=openAccount;$('#accountClose').onclick=closeAccount;$('#saveAccountBtn').onclick=saveAccountChanges;$('#accountLogoutBtn').onclick=logout;$('#accountPhotoInput').onchange=handleAccountPhoto;document.querySelectorAll('[data-account-gender]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-account-gender]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
  document.querySelectorAll('[data-gender]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-gender]').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedGender=b.dataset.gender});
- $('#photoInput').onchange=e=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>$('#photoPreview').innerHTML='<img src="'+r.result+'" alt="Profile">';r.readAsDataURL(f)};
+ $('#photoInput').onchange=async e=>{const f=e.target.files?.[0];if(!f)return;try{const photo=await compressProfileImage(f);$('#photoPreview').innerHTML='<img src="'+photo+'" alt="Profile">';}catch(err){profileMsg('Photo upload failed: '+(err?.message||'Please try again.'))}};
  try{
   const hasOAuthCallback = /(?:[?#].*(?:code=|access_token=|refresh_token=|error=))/.test(location.href);
   if(hasOAuthCallback && sb){ await new Promise(r=>setTimeout(r,150)); }
@@ -415,9 +473,12 @@ async function loadProfileFromSupabase(){
     const row=Array.isArray(rows)?rows[0]:null;
     if(!row)return null;
     const p=getSavedProfile();
-    const merged={...p,name:row.name||p.name||'',dob:row.dob||p.dob||'',gender:row.gender||p.gender||'',country:row.country||p.country||'',photo:(row.avatar_url&&/^https?:/i.test(row.avatar_url))?row.avatar_url:(p.photo||'')};
+    const merged={...p,name:row.name||p.name||'',dob:row.dob||p.dob||'',gender:row.gender||p.gender||'',country:row.country||p.country||'',photo:(row.avatar_url&&/^(https?:|data:image\/)/i.test(row.avatar_url))?row.avatar_url:(p.photo||'')};
     accountSet('veyoraProfile',JSON.stringify(merged));
     if(row.country)accountSet('veyoraCountry',row.country);
+    if(merged.photo && !row.avatar_url){
+      try{await supabaseProfileRequest('PATCH',PROFILE_TABLE+'?id=eq.'+encodeURIComponent(session.user.id),{avatar_url:merged.photo});}catch(e){console.warn('Could not sync profile photo:',e)}
+    }
     populateProfileFromSaved();
     return merged;
   }catch(e){
@@ -452,7 +513,7 @@ async function saveProfileToSupabase(extra={}){
     dob:p.dob||null,
     gender:p.gender||null,
     country:extra.country ?? p.country ?? null,
-    avatar_url:(p.photo&&/^https?:/i.test(p.photo))?p.photo:null,
+    avatar_url:p.photo||null,
     online:extra.online ?? true
   };
 
@@ -469,9 +530,38 @@ async function setProfileOnline(isOnline){
   if(!session?.user?.id||!session?.access_token)return;
   try{await supabaseProfileRequest('PATCH',PROFILE_TABLE+'?id=eq.'+encodeURIComponent(session.user.id),{online:!!isOnline});}catch(e){console.warn('Online status update failed:',e)}
 }
-function openAccount(){const p=getSavedProfile();const id=ensureVeyoraId();$('#accountPanel').classList.remove('hidden');$('#accountPanel').setAttribute('aria-hidden','false');$('#accountNameInput').value=p.name||'';$('#accountDobInput').value=p.dob||'';$('#accountName').textContent=p.name||'Your name';$('#accountId').textContent='Veyora ID: '+id;$('#accountPlan').textContent=accountGet('veyoraPlan','')||'Free Chat';$('#accountLoginMethod').textContent=session?.user?.email||session?.user?.phone||'Saved on this device';document.querySelectorAll('[data-account-gender]').forEach(b=>b.classList.toggle('active',b.dataset.accountGender===(p.gender||'')));$('#accountPhoto').innerHTML=p.photo?'<img src="'+p.photo+'" alt="Profile">':'👤'}
+function openAccount(){
+ const p=getSavedProfile();
+ const id=ensureVeyoraId();
+ $('#accountPanel').classList.remove('hidden');
+ $('#accountPanel').setAttribute('aria-hidden','false');
+ $('#accountNameInput').value=p.name||'';
+ $('#accountDobInput').value=p.dob||'';
+ $('#accountName').textContent=p.name||'Your name';
+ $('#accountId').textContent='Veyora ID: '+id;
+ $('#accountLoginMethod').textContent=session?.user?.email||session?.user?.phone||'Saved on this device';
+ document.querySelectorAll('[data-account-gender]').forEach(b=>b.classList.toggle('active',b.dataset.accountGender===(p.gender||'')));
+ $('#accountPhoto').innerHTML=p.photo?'<img src="'+p.photo+'" alt="Profile">':'👤';
+ refreshAccountPlanDetails();
+}
 function closeAccount(){$('#accountPanel').classList.add('hidden');$('#accountPanel').setAttribute('aria-hidden','true')}
-function handleAccountPhoto(e){const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{const p=getSavedProfile();p.photo=r.result;accountSet('veyoraProfile',JSON.stringify(p));$('#accountPhoto').innerHTML='<img src="'+r.result+'" alt="Profile">';if($('#photoPreview'))$('#photoPreview').innerHTML='<img src="'+r.result+'" alt="Profile">'};r.readAsDataURL(f)}
+async function handleAccountPhoto(e){
+ const f=e.target.files?.[0];
+ if(!f)return;
+ try{
+   const photo=await compressProfileImage(f);
+   const p=getSavedProfile();
+   p.photo=photo;
+   accountSet('veyoraProfile',JSON.stringify(p));
+   $('#accountPhoto').innerHTML='<img src="'+photo+'" alt="Profile">';
+   if($('#photoPreview'))$('#photoPreview').innerHTML='<img src="'+photo+'" alt="Profile">';
+   await saveProfileToSupabase({online:true});
+   $('#accountMsg').textContent='Profile photo updated.';
+ }catch(err){
+   console.warn('Profile photo update failed:',err);
+   $('#accountMsg').textContent='Photo update failed: '+(err?.message||'Please try again.');
+ }
+}
 async function saveAccountChanges(){
  const p=getSavedProfile();
  const name=$('#accountNameInput').value.trim(),dob=$('#accountDobInput').value;
@@ -702,7 +792,10 @@ async function startVideo(){
  if(session?.user?.id && !controlReady) await setupUserControlChannel().catch(()=>{});
  clearInterval(partnerWatchTimer);partnerWatchTimer=null;
  if(chatAccess==='paid'&&!selectedPlan){alert('Please choose a paid plan first.');return}
- if(chatAccess==='paid' && accountGet('veyoraPaidPlan','')!==selectedPlan){alert('Please complete payment for the selected plan first.');openPaymentModal();return}
+ if(chatAccess==='paid') {
+   const planInfo=getPlanInfo();
+   if(!planInfo.active || planInfo.plan!==selectedPlan){alert('Your selected Paid Match plan is not active. Please complete a new payment.');openPaymentModal();return}
+ }
  const countryValue=$('#country')?.value||'all';
  const currentProfile=getSavedProfile();
  if(currentProfile.country!==countryValue){
@@ -875,7 +968,7 @@ async function pollForMatch(){
 
 async function showMatchedUser(uid){
   try{
-    const rows=await supabaseProfileRequest('GET',PROFILE_TABLE+'?id=eq.'+encodeURIComponent(uid)+'&select=country,gender,name');
+    const rows=await supabaseProfileRequest('GET',PROFILE_TABLE+'?id=eq.'+encodeURIComponent(uid)+'&select=country,gender,name,avatar_url');
     matchedProfile=rows?.[0]||null;
     const countryCode=matchedProfile?.country||'all';
     const sel=$('#country');
@@ -886,11 +979,13 @@ async function showMatchedUser(uid){
       else if(countryCode!=='all'){text=countryCode;}
     }
     $('#matchFlag').textContent=flag;$('#matchCountry').textContent=text;
+    $('#matchName').textContent=matchedProfile?.name||'Veyora user';
     const g=String(matchedProfile?.gender||'').toLowerCase();
     $('#matchGenderIcon').textContent=g==='male'?'👦':g==='female'?'👩':'👤';
+    const avatar=matchedProfile?.avatar_url||'';
+    $('#otherUserAvatar').innerHTML=/^(https?:|data:image\/)/i.test(avatar)?'<img src="'+avatar+'" alt="Profile">':'👤';
   }catch(e){console.warn('Matched profile load failed',e)}
 }
-
 async function leaveMatchQueue(){
   clearInterval(matchPoll);matchPoll=null;clearInterval(signalPoll);signalPoll=null;clearInterval(partnerWatchTimer);partnerWatchTimer=null;
   if(!session?.user?.id)return;
