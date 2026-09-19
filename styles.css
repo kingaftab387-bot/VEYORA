@@ -766,3 +766,154 @@
 @media (min-width:1201px){
   .videoStage > .localVideo{width:clamp(220px,22vw,320px) !important;}
 }
+
+/* FINAL FLINGSTER-STYLE VIDEO LAYOUT
+   Main remote video fills the screen; local camera is a small floating preview.
+   Responsive for phones, tablets and laptops. Existing controls/logic unchanged. */
+.videoStage{
+  display:block !important;
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  overflow:hidden !important;
+  background:#000 !important;
+}
+.videoStage > .remoteVideo{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  display:block !important;
+  background:#000 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  overflow:hidden !important;
+  z-index:1 !important;
+}
+.videoStage > .remoteVideo video,
+.videoStage #remoteVideoEl{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  display:block !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  background:#000 !important;
+}
+.videoStage > .localVideo{
+  position:absolute !important;
+  z-index:12 !important;
+  right:clamp(10px,2vw,24px) !important;
+  top:clamp(70px,9vh,92px) !important;
+  width:clamp(112px,20vw,230px) !important;
+  aspect-ratio:16 / 9 !important;
+  height:auto !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  background:#10131b !important;
+  border:2px solid rgba(255,255,255,.72) !important;
+  border-radius:12px !important;
+  overflow:hidden !important;
+  box-shadow:0 8px 28px rgba(0,0,0,.45) !important;
+}
+.videoStage > .localVideo video,
+.videoStage #cameraPreview{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  display:block !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  background:#000 !important;
+}
+.videoStage > .localVideo .youTag{
+  left:7px !important;
+  bottom:7px !important;
+  padding:4px 7px !important;
+  font-size:11px !important;
+  border-radius:7px !important;
+  background:rgba(0,0,0,.55) !important;
+}
+
+/* Keep overlays and controls above both video layers. */
+.videoTop,.videoBottom,.reactionBar,.sidePanel,.safetyPanel,.matchInfoOverlay,.chatComposer,.chatOverlayMessages{z-index:20 !important;}
+
+@media (max-width:700px){
+  .videoStage > .localVideo{
+    right:10px !important;
+    top:68px !important;
+    width:clamp(112px,31vw,150px) !important;
+    aspect-ratio:16 / 9 !important;
+    border-radius:10px !important;
+  }
+  .videoStage > .localVideo .youTag{font-size:10px !important;}
+}
+
+@media (min-width:701px) and (max-width:1100px){
+  .videoStage > .localVideo{width:180px !important;}
+}
+
+@media (min-width:1101px){
+  .videoStage > .localVideo{width:230px !important;}
+}
+
+/* VEYORA 50/50 VIDEO MODE — final responsive override */
+.videoStage{
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  grid-template-rows:1fr 1fr !important;
+  gap:0 !important;
+  padding:0 !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+  background:#030407 !important;
+}
+.videoStage > .remoteVideo,
+.videoStage > .localVideo{
+  position:relative !important;
+  inset:auto !important;
+  grid-column:1 !important;
+  width:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  height:100% !important;
+  max-width:none !important;
+  aspect-ratio:auto !important;
+  margin:0 !important;
+  border-radius:0 !important;
+  align-self:stretch !important;
+  overflow:hidden !important;
+}
+.videoStage > .remoteVideo{grid-row:1 !important;}
+.videoStage > .localVideo{grid-row:2 !important; right:auto !important; top:auto !important; z-index:1 !important; border:0 !important; box-shadow:none !important; background:#11131c !important;}
+.videoStage > .remoteVideo > video,
+.videoStage > .localVideo > video,
+.videoStage #cameraPreview{
+  position:absolute !important;
+  inset:0 !important;
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+}
+.videoStage > .remoteVideo.hasRemoteVideo{background:#000 !important;}
+.videoStage > .remoteVideo .remotePlaceholder{position:relative;z-index:2;}
+.videoStage > .localVideo .youTag{left:10px !important;top:10px !important;bottom:auto !important;z-index:4 !important;}
+
+/* Keep the two video areas equal on every device; controls/header stay over the video. */
+@media (max-width:700px){
+  .videoStage{grid-template-columns:1fr !important;grid-template-rows:1fr 1fr !important;}
+  .videoStage > .remoteVideo,
+  .videoStage > .localVideo{width:100% !important;height:100% !important;}
+}
+@media (min-width:701px){
+  .videoStage{grid-template-columns:1fr !important;grid-template-rows:1fr 1fr !important;}
+  .videoStage > .remoteVideo,
+  .videoStage > .localVideo{width:100% !important;height:100% !important;}
+}
