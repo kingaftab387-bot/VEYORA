@@ -728,7 +728,7 @@ async function requestMediaAgain(preferredKind=null){
         const desktop=!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
         let vs=null;
         try{
-          vs=await navigator.mediaDevices.getUserMedia({video:desktop?{width:{ideal:1280},height:{ideal:720},frameRate:{ideal:30,max:30}}:{facingMode:'user',width:{ideal:1280},height:{ideal:720}},audio:false});
+          vs=await navigator.mediaDevices.getUserMedia({video:desktop?{width:{ideal:1280},height:{ideal:960},aspectRatio:{ideal:4/3},frameRate:{ideal:30,max:30}}:{facingMode:'user',width:{ideal:1280},height:{ideal:960},aspectRatio:{ideal:4/3}},audio:false});
         }catch(first){
           const devices=await navigator.mediaDevices.enumerateDevices().catch(()=>[]);
           const cam=devices.find(d=>d.kind==='videoinput' && d.deviceId);
@@ -840,7 +840,7 @@ async function startVideo(){
  }else{
    if(!videoTrack){
      try{
-       let constraints={video:{width:{ideal:1280},height:{ideal:720},frameRate:{ideal:30,max:30}},audio:false};
+       let constraints={video:{width:{ideal:1280},height:{ideal:960},aspectRatio:{ideal:4/3},frameRate:{ideal:30,max:30}},audio:false};
        // facingMode is only a preference on phones; avoid it on desktop.
        const mobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
        if(mobile) constraints.video.facingMode='user';
@@ -1428,7 +1428,7 @@ async function switchCamera(){
     // First try the browser's native front/back selector.
     try{
       nextStream=await navigator.mediaDevices.getUserMedia({
-        video:{facingMode:{exact:nextFacing},width:{ideal:1280},height:{ideal:720}},
+        video:{facingMode:{exact:nextFacing},width:{ideal:1280},height:{ideal:960},aspectRatio:{ideal:4/3}},
         audio:false
       });
     }catch(firstErr){
@@ -1441,7 +1441,7 @@ async function switchCamera(){
       let target=cams.find(d=>d.deviceId!==currentId);
       if(!target) target=cams[0];
       nextStream=await navigator.mediaDevices.getUserMedia({
-        video:{deviceId:{exact:target.deviceId},width:{ideal:1280},height:{ideal:720}},
+        video:{deviceId:{exact:target.deviceId},width:{ideal:1280},height:{ideal:960},aspectRatio:{ideal:4/3}},
         audio:false
       });
     }
