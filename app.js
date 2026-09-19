@@ -968,7 +968,7 @@ async function pollForMatch(){
 
 async function showMatchedUser(uid){
   try{
-    const rows=await supabaseProfileRequest('GET',PROFILE_TABLE+'?id=eq.'+encodeURIComponent(uid)+'&select=country,gender,name,avatar_url');
+    const rows=await supabaseProfileRequest('GET',PROFILE_TABLE+'?id=eq.'+encodeURIComponent(uid)+'&select=country,gender,name');
     matchedProfile=rows?.[0]||null;
     const countryCode=matchedProfile?.country||'all';
     const sel=$('#country');
@@ -979,13 +979,11 @@ async function showMatchedUser(uid){
       else if(countryCode!=='all'){text=countryCode;}
     }
     $('#matchFlag').textContent=flag;$('#matchCountry').textContent=text;
-    $('#matchName').textContent=matchedProfile?.name||'Veyora user';
     const g=String(matchedProfile?.gender||'').toLowerCase();
     $('#matchGenderIcon').textContent=g==='male'?'👦':g==='female'?'👩':'👤';
-    const avatar=matchedProfile?.avatar_url||'';
-    $('#otherUserAvatar').innerHTML=/^(https?:|data:image\/)/i.test(avatar)?'<img src="'+avatar+'" alt="Profile">':'👤';
   }catch(e){console.warn('Matched profile load failed',e)}
 }
+
 async function leaveMatchQueue(){
   clearInterval(matchPoll);matchPoll=null;clearInterval(signalPoll);signalPoll=null;clearInterval(partnerWatchTimer);partnerWatchTimer=null;
   if(!session?.user?.id)return;
