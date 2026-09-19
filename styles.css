@@ -923,3 +923,13 @@
 .enableRemoteAudio{display:none !important;}
 .otherUserAvatar{overflow:hidden;}
 .otherUserAvatar img{width:100%;height:100%;display:block;object-fit:cover;border-radius:50%;}
+
+/* VC orientation fix: keep the remote person's left/right direction natural; mirror only the self-preview. */
+.videoStage > .remoteVideo video,
+.videoStage #remoteVideoEl{
+  transform:scaleX(1) !important;
+}
+.videoStage > .localVideo video,
+.videoStage #cameraPreview{
+  transform:scaleX(-1) !important;
+}

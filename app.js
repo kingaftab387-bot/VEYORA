@@ -37,7 +37,7 @@ function updatePaidPlanUI(){
  }
  const info=getPlanInfo();
  const isActivePurchasedPlan=info.active && info.plan===plan;
- msgEl.textContent=isActivePurchasedPlan ? 'Selected: '+plan+' · Active' : 'Selected: '+plan;
+ msgEl.textContent=isActivePurchasedPlan ? '' : 'Selected: '+plan;
  payBtn.classList.toggle('hidden',isActivePurchasedPlan);
 }
 
