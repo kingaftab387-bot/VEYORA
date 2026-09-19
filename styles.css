@@ -1,0 +1,675 @@
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#070810;color:#f7f7fb;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}.hidden{display:none!important}.app{min-height:100vh}.screenPage{min-height:100vh}.brand,.logo{font-weight:950;letter-spacing:-1px;color:#fff}.brand{font-size:48px}.brand span,.logo span{color:#ff277f}.authScreen{display:grid;place-items:center;padding:32px 18px;background:radial-gradient(circle at 50% 15%,#1a1020 0,#070810 45%)}.authHero{text-align:center;max-width:720px;margin-bottom:22px}.authHero h1{font-size:56px;line-height:1.02;margin:28px 0 12px}.authHero h1 span{background:linear-gradient(90deg,#ff277f,#9a62ff);color:transparent;background-clip:text}.authHero p{color:#9ba0b3;font-size:17px}.authPill,.stepBadge{display:inline-block;border:1px solid #51304d;border-radius:999px;color:#ff76af;padding:8px 13px;font-size:12px;font-weight:850}.authCard{width:min(430px,100%);background:#11131e;border:1px solid #2b2f42;border-radius:24px;padding:26px;box-shadow:0 20px 60px #0008}.authCard h2{margin:0 0 7px;font-size:27px}.muted{color:#9ba0b3;line-height:1.5}.authBtn{width:100%;padding:14px;border:0;border-radius:12px;color:#fff;font-weight:800;margin-top:9px;cursor:pointer}.google{background:#f4f5f7;color:#171820}.fb{background:#1877f2}.primary{background:#ff277f}.divider{text-align:center;color:#73788c;margin:16px 0}.authCard input,.field input,.countryCard select{width:100%;padding:14px;background:#0a0c13;border:1px solid #303448;border-radius:12px;color:#fff;outline:none}.authCard small{display:block;color:#70768a;text-align:center;margin-top:14px}.authmsg,.formMsg{color:#ff8bb7;font-size:13px;text-align:center;min-height:18px}.simpleHeader,.mainHeader{height:78px;padding:0 26px;display:flex;align-items:center;border-bottom:1px solid #242737}.simpleHeader .logo,.mainHeader .logo{font-size:28px;text-decoration:none}.simpleHeader span{margin-left:auto;color:#8f95a8;font-size:13px}.formWrap{width:min(620px,100%);margin:auto;padding:42px 22px 60px}.formWrap h1{font-size:40px;margin:18px 0 7px}.photoBox{display:flex;align-items:center;gap:18px;margin:26px 0}.photoPreview{width:92px;height:92px;border-radius:50%;background:#171a28;border:2px solid #34384c;display:grid;place-items:center;font-size:38px;overflow:hidden}.photoPreview img{width:100%;height:100%;object-fit:cover}.uploadBtn{background:#252a3b;border:1px solid #363b50;padding:12px 15px;border-radius:11px;cursor:pointer;font-weight:750}.field{display:block;margin-top:18px;color:#aeb3c2;font-size:13px}.field input{margin-top:8px}.genderGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:8px}.genderGrid button{padding:13px;border-radius:12px;border:1px solid #303448;background:#11131e;color:#cdd1dc;cursor:pointer}.genderGrid button.active{background:#ff277f;border-color:#ff277f;color:#fff}.bigBtn,.startBtn{width:100%;border:0;border-radius:13px;padding:15px;background:linear-gradient(90deg,#ff277f,#9a4fff);color:#fff;font-weight:900;font-size:16px;cursor:pointer}.bigBtn{margin-top:25px}.mainHeader{gap:18px}.online{margin-left:auto;color:#70efad;font-size:15px}.online i,.liveDot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#70efad;box-shadow:0 0 12px #70efad;margin-right:7px}.ghostBtn{background:#171a27;color:#d4d7e2;border:1px solid #2e3345;border-radius:10px;padding:9px 13px}.matchWrap{width:min(720px,100%);margin:auto;padding:65px 22px}.matchTitle{text-align:center}.matchTitle h1{font-size:42px;margin:17px 0 8px}.countryCard{margin-top:30px;background:#10121c;border:1px solid #2b2f42;border-radius:18px;padding:20px}.countryCard label{display:block;color:#9ba0b3;font-size:13px;margin-bottom:8px}.accessCard{margin-top:14px;background:#10121c;border:1px solid #2b2f42;border-radius:18px;padding:20px}.accessHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.accessHead b{font-size:19px}.accessHead p{margin:5px 0 0;font-size:13px}.accessGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}.accessOption{padding:17px;border-radius:14px;border:1px solid #303448;background:#171a25;color:#fff;text-align:left;cursor:pointer}.accessOption strong,.accessOption small{display:block}.accessOption small{color:#8f95a8;margin-top:6px}.accessOption.active{border-color:#ff277f;background:#281323;box-shadow:0 0 0 1px #ff277f33}.paidPlans{margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.paidPlans button{padding:14px 8px;border-radius:12px;border:1px solid #303448;background:#171a25;color:#fff;cursor:pointer}.paidPlans button.selected{border-color:#ff277f;background:#281323}.paidPlans b,.paidPlans span{display:block}.paidPlans span{color:#9ba0b3;font-size:12px;margin-top:4px}.paidPlans .formMsg{grid-column:1/-1;margin:2px 0 0}@media(max-width:700px){.accessGrid,.paidPlans{grid-template-columns:1fr}.accessHead{display:block}.accessHead .authPill{margin-top:10px}}
+.liveCard{margin-top:14px;background:#10121c;border:1px solid #2b2f42;border-radius:18px;padding:20px;display:flex;align-items:center;justify-content:space-between}.liveCard b{font-size:17px}.liveCard strong{font-size:31px;color:#70efad}.liveCard p{margin:5px 0 0;font-size:12px}.startBtn{margin-top:16px;font-size:18px;padding:17px;text-align:center;position:relative;display:flex;align-items:center;justify-content:center;gap:8px}.startBtn>span:last-child{position:absolute;right:18px}.safetyRow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}.safetyRow>div{padding:18px;background:#0f111a;border:1px solid #292d3e;border-radius:15px}.safetyRow b,.safetyRow small{display:block;margin-top:5px}.safetyRow small{color:#858b9e}.videoScreen{position:fixed;inset:0;background:#030407;z-index:20;display:flex;flex-direction:column}.videoTop{height:64px;display:flex;align-items:center;padding:0 16px;background:#080a10cc;position:absolute;left:0;right:0;top:0;z-index:3}.smallBrand{font-size:25px}.videoStatus{margin:auto;color:#cbd0dc;font-size:13px}.circleBtn{width:38px;height:38px;border-radius:50%;background:#191c27;color:#fff;border:1px solid #33384b;font-size:24px}.videoStage{flex:1;position:relative;overflow:hidden}.remoteVideo{position:absolute;inset:0;display:grid;place-items:center;align-content:center;background:radial-gradient(circle at 50% 40%,#1b1d2b,#05060a 65%);text-align:center}.remoteVideo h2{margin:16px 0 5px}.remoteVideo p{color:#858b9e}.searchSpinner{width:54px;height:54px;border:4px solid #35394b;border-top-color:#ff277f;border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.localVideo{position:absolute;right:16px;top:80px;width:min(30vw,260px);aspect-ratio:9/13;background:#11131c;border:2px solid #4a4f63;border-radius:14px;overflow:hidden;box-shadow:0 12px 40px #0008}.localVideo video{width:100%;height:100%;object-fit:cover}.youTag{position:absolute;left:8px;bottom:8px;background:#000b;padding:6px 9px;border-radius:8px;font-size:12px}.videoBottom{padding:14px 16px 20px;background:linear-gradient(transparent,#05060a 25%)}.callHint{text-align:center;color:#8f95a8;font-size:12px;margin-bottom:12px}.controls{display:flex;justify-content:center;gap:10px}.control,.nextControl{border:1px solid #303448;background:#171a25;color:#fff;border-radius:50%;width:50px;height:50px;cursor:pointer}.nextControl{width:105px;border-radius:14px;background:linear-gradient(90deg,#ff277f,#974fff);font-weight:900}.danger{color:#ff7894}.disabled{opacity:.45}@media(max-width:700px){.authHero h1{font-size:42px}.brand{font-size:40px}.matchTitle h1{font-size:34px}.simpleHeader,.mainHeader{padding:0 17px}.online{font-size:12px}.safetyRow{grid-template-columns:1fr}.localVideo{width:110px;top:76px}.videoStatus{font-size:11px}.controls{gap:7px}}
+
+/* Veyora continuation UI */
+.countryCard select{max-height:52px}
+.videoStage{background:#030407}
+.remotePlaceholder{display:grid;place-items:center;text-align:center}
+.otherUserAvatar{width:82px;height:82px;border-radius:50%;display:grid;place-items:center;background:#171a27;border:1px solid #34384b;font-size:40px;margin-bottom:16px}
+.reactionBar{position:absolute;right:18px;bottom:118px;z-index:4;display:flex;gap:7px}
+.reactionBar button{width:42px;height:42px;border:1px solid #303448;background:#171a25cc;border-radius:50%;cursor:pointer;font-size:20px}
+.reactionBar button:active{transform:scale(1.12)}
+.sidePanel,.safetyPanel{position:absolute;right:16px;top:78px;bottom:92px;width:min(380px,calc(100% - 32px));background:#10121c;border:1px solid #303448;border-radius:18px;z-index:8;box-shadow:0 18px 60px #000b;overflow:hidden;display:flex;flex-direction:column}
+.panelHeader{display:flex;align-items:center;justify-content:space-between;padding:17px 18px;border-bottom:1px solid #292d3e}
+.panelClose{border:0;background:transparent;color:#fff;font-size:25px;cursor:pointer}
+.chatMessages{flex:1;padding:16px;overflow:auto}
+.emptyChat{color:#858b9e;text-align:center;font-size:13px;margin-top:30px}
+.chatBubble{background:#1a1d2a;border:1px solid #2d3244;border-radius:12px;padding:9px 11px;margin-bottom:8px;max-width:85%;font-size:13px}
+.chatBubble.you{margin-left:auto;background:#281323;border-color:#5a2847}
+.chatForm{display:flex;gap:8px;padding:12px;border-top:1px solid #292d3e}
+.chatForm input{min-width:0;flex:1;padding:11px 12px;background:#080a10;border:1px solid #303448;border-radius:10px;color:#fff;outline:none}
+.chatForm button,.reportAction{border:0;border-radius:10px;background:#ff277f;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer}
+.settingsList{padding:8px;overflow:auto}
+.settingItem{width:100%;display:grid;grid-template-columns:30px 1fr 18px;gap:10px;align-items:center;text-align:left;padding:14px 12px;border:0;border-bottom:1px solid #242838;background:transparent;color:#fff;cursor:pointer}
+.settingItem>span:first-child{font-size:20px}
+.settingItem small{display:block;color:#858b9e;margin-top:3px}
+.settingItem strong{color:#858b9e;font-size:22px}
+.settingsMessage{padding:12px 16px;color:#ff8bb7;font-size:12px;min-height:18px}
+.safetyPanel{top:auto;right:50%;transform:translateX(50%);bottom:104px;width:min(460px,calc(100% - 32px));height:auto;padding-bottom:14px}
+.safetyPanel>p{padding:0 18px;color:#b8bdca;font-size:13px;line-height:1.55}
+.reportAction{margin:0 18px}
+@media(max-width:700px){
+ .reactionBar{right:10px;bottom:116px}
+ .reactionBar button{width:38px;height:38px;font-size:18px}
+ .sidePanel{top:70px;right:8px;width:calc(100% - 16px)}
+}
+@keyframes floatReaction{0%{transform:translateY(0) scale(.8);opacity:0}20%{opacity:1}100%{transform:translateY(-170px) scale(1.15);opacity:0}}\n
+/* Two equal full-width video panes — mobile safe */
+.videoScreen{
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height:100dvh;
+  min-height:100dvh;
+  overflow:hidden;
+  background:#030407;
+  z-index:20;
+  display:flex;
+  flex-direction:column;
+}
+.videoStage{
+  flex:1 1 0;
+  min-height:0;
+  width:100%;
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr;
+  grid-template-rows:1fr 1fr;
+  overflow:hidden;
+  background:#030407;
+}
+.remoteVideo,
+.localVideo{
+  position:relative;
+  inset:auto;
+  left:auto;
+  right:auto;
+  top:auto;
+  bottom:auto;
+  width:100%;
+  height:100%;
+  min-width:0;
+  min-height:0;
+  margin:0;
+  padding:0;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  overflow:hidden;
+  background:#030407;
+}
+.remoteVideo{grid-row:1;grid-column:1;}
+.localVideo{grid-row:2;grid-column:1;}
+.remoteVideo video,
+.localVideo video,
+#cameraPreview{
+  position:absolute;
+  inset:0;
+  width:100% !important;
+  height:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  max-width:none;
+  max-height:none;
+  display:block;
+  object-fit:cover;
+  object-position:center center;
+  margin:0;
+  padding:0;
+  border:0;
+  background:#000;
+}
+.remotePlaceholder{
+  width:100%;
+  height:100%;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  text-align:center;
+  margin:0;
+  padding:20px;
+}
+.youTag{left:12px;bottom:12px;z-index:2;}
+.videoTop{z-index:3;}
+.reactionBar{z-index:4;}
+.videoBottom{position:relative;z-index:3;flex:0 0 auto;}
+
+@media(max-width:700px){
+  .videoStage{grid-template-rows:minmax(0,1fr) minmax(0,1fr);}
+  .remoteVideo video,
+  .localVideo video,
+  #cameraPreview{
+    object-fit:cover;
+    object-position:center center;
+  }
+  .reactionBar{right:10px;bottom:116px;}
+  .reactionBar button{width:38px;height:38px;font-size:18px;}
+}
+
+/* Final mobile-safe two-pane camera layout: keep both panes rendered and keep local camera visible. */
+.videoStage{
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  grid-template-rows:repeat(2,minmax(0,1fr)) !important;
+  flex:1 1 0 !important;
+  min-height:0 !important;
+  height:auto !important;
+  overflow:hidden !important;
+}
+.videoStage > .remoteVideo{
+  grid-area:1 / 1 !important;
+  position:relative !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  z-index:1 !important;
+}
+.videoStage > .localVideo{
+  grid-area:2 / 1 !important;
+  position:relative !important;
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  max-width:none !important;
+  aspect-ratio:auto !important;
+  z-index:2 !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  background:#030407 !important;
+}
+#cameraPreview{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  max-width:none !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  visibility:visible !important;
+  opacity:1 !important;
+}
+
+
+/* Mobile full-screen two-pane video layout */
+.videoStage{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  grid-template-rows:50% 50% !important;
+  overflow:hidden !important;
+  background:transparent !important;
+  z-index:1 !important;
+}
+.videoStage > .remoteVideo,
+.videoStage > .localVideo{
+  position:relative !important;
+  inset:auto !important;
+  left:auto !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:auto !important;
+  width:100% !important;
+  height:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  overflow:hidden !important;
+}
+.videoStage > .remoteVideo{grid-area:1 / 1 !important;}
+.videoStage > .localVideo{grid-area:2 / 1 !important;}
+.videoStage > .remoteVideo video,
+.videoStage > .localVideo video,
+.videoStage #cameraPreview{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  object-position:center !important;
+  display:block !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  background:#000 !important;
+}
+.videoTop,
+.videoBottom,
+.reactionBar{z-index:5 !important;}
+.videoTop{background:linear-gradient(#080a10cc,#080a1000) !important;}
+.videoBottom{
+  position:absolute !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+  padding:10px 10px 14px !important;
+  background:transparent !important;
+}
+.callHint{font-size:11px !important;margin-bottom:8px !important;}
+.controls{gap:7px !important;}
+.control,.nextControl{
+  width:42px !important;
+  height:42px !important;
+  border:1px solid #3a3f50 !important;
+  background:#151824b8 !important;
+  color:#e9ebf2 !important;
+  box-shadow:none !important;
+  opacity:.9 !important;
+}
+.nextControl{
+  width:92px !important;
+  border-radius:12px !important;
+  background:linear-gradient(90deg,#ef2a7d,#9852ea) !important;
+  font-size:14px !important;
+}
+.reactionBar{right:8px !important;bottom:104px !important;gap:5px !important;}
+.reactionBar button{width:36px !important;height:36px !important;font-size:17px !important;background:#151824b8 !important;opacity:.9 !important;}
+.youTag{font-size:11px !important;padding:5px 8px !important;left:10px !important;bottom:10px !important;z-index:6 !important;}
+@media(max-width:700px){
+  .videoStage{grid-template-rows:50% 50% !important;}
+  .videoTop{height:64px !important;padding:0 12px !important;}
+  .smallBrand{font-size:24px !important;}
+  .circleBtn{width:36px !important;height:36px !important;font-size:21px !important;}
+  .videoStatus{font-size:11px !important;}
+  .videoBottom{padding:9px 8px 13px !important;}
+  .control,.nextControl{width:40px !important;height:40px !important;}
+  .nextControl{width:88px !important;}
+}
+
+
+/* Compact on-video chat: no large chat panel */
+#chatPanel{display:none!important}
+.chatComposer{position:absolute;left:12px;right:12px;bottom:86px;z-index:9}
+.chatOverlayForm{display:flex;gap:7px;max-width:520px;margin:auto;padding:5px;border-radius:18px;background:rgba(7,8,16,.72);border:1px solid rgba(120,126,150,.28);backdrop-filter:blur(10px)}
+.chatOverlayForm input{min-width:0;flex:1;padding:9px 12px;border:0;outline:none;background:transparent;color:#fff;font-size:14px}
+.chatOverlayForm input::placeholder{color:#a1a6b6}
+.chatOverlayForm button{border:0;border-radius:13px;padding:8px 13px;background:#ff277f;color:#fff;font-weight:750;font-size:13px}
+.chatOverlayMessages{position:absolute;left:8px;bottom:145px;z-index:7;display:flex;flex-direction:column;align-items:flex-start;gap:5px;max-width:min(68vw,320px);pointer-events:none}
+.chatOverlayBubble{background:transparent;border:0;border-radius:0;padding:3px 0;color:#fff;font-size:12px;line-height:1.25;box-shadow:none;backdrop-filter:none;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+
+@media(max-width:700px){
+ .chatComposer{bottom:78px;left:10px;right:10px}
+ .chatOverlayMessages{left:8px;bottom:130px;max-width:72vw}
+ .chatOverlayBubble{font-size:12px;padding:3px 0}
+}
+
+/* Final mobile control arrangement */
+.videoTop{padding:0 10px !important;}
+.videoTop .smallBrand{margin-right:auto !important;}
+.videoStatus{display:none !important;}
+.videoTop .circleBtn{flex:0 0 40px !important;width:40px !important;height:40px !important;margin-left:10px !important;background:transparent !important;border-color:rgba(120,126,150,.42) !important;opacity:.72 !important;}
+.videoTop .circleBtn + .circleBtn{margin-left:2px !important;}
+
+.controls{position:relative !important;width:100% !important;height:48px !important;display:flex !important;align-items:center !important;justify-content:flex-start !important;gap:12px !important;padding:0 6px !important;}
+.control,.nextControl{width:40px !important;height:40px !important;background:rgba(20,23,35,.38) !important;border-color:rgba(130,136,158,.30) !important;opacity:.72 !important;box-shadow:none !important;}
+.control:hover,.control:focus,.nextControl:hover,.nextControl:focus{background:inherit !important;}
+#switchCamBtn{order:1 !important;}
+#micBtn{order:2 !important;}
+#camBtn{order:3 !important;}
+#chatBtn{order:4 !important;}
+#safetyBtn{order:5 !important;}
+#nextBtn{order:6 !important;margin-left:auto !important;width:82px !important;height:40px !important;border-radius:12px !important;font-size:14px !important;background:rgba(239,42,125,.78) !important;border:0 !important;}
+
+.matchInfoOverlay{position:absolute;left:14px;bottom:88px;z-index:6;display:flex;flex-direction:column;align-items:flex-start;gap:7px;color:#fff;text-shadow:0 1px 5px rgba(0,0,0,.5);font-size:14px;}
+.connectionLine,.countryLine,.genderLine{display:flex;align-items:center;gap:8px;}
+.omeMini{display:inline-flex;align-items:center;justify-content:center;width:36px;height:22px;border-radius:6px;background:rgba(255,255,255,.68);color:#ff5b32;font-weight:900;font-size:10px;text-shadow:none;}
+.omeMini span{color:#ff744d;}
+.countryLine span:first-child,.genderLine span:first-child{font-size:20px;line-height:1;}
+.reportOverlayBtn{margin-top:3px;padding:9px 13px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(20,23,35,.34);color:#fff;font-weight:700;font-size:12px;opacity:.85;}
+
+@media(max-width:700px){
+  .videoTop{height:58px !important;padding:0 8px !important;}
+  .videoTop .smallBrand{font-size:23px !important;}
+  .videoTop .circleBtn{width:38px !important;height:38px !important;flex-basis:38px !important;font-size:20px !important;margin-left:7px !important;}
+  .videoTop .circleBtn + .circleBtn{margin-left:1px !important;}
+  .videoBottom{padding:7px 8px 10px !important;}
+  .controls{gap:10px !important;height:44px !important;padding:0 4px !important;}
+  .control{width:38px !important;height:38px !important;font-size:18px !important;}
+  #nextBtn{width:80px !important;height:38px !important;font-size:13px !important;}
+  .matchInfoOverlay{left:13px;bottom:82px;gap:6px;font-size:13px;}
+  .reportOverlayBtn{padding:8px 12px;font-size:11px;}
+}
+
+
+/* Requested final partner-info placement */
+.matchInfoOverlay{
+  position:absolute !important;
+  left:14px !important;
+  bottom:14px !important;
+  z-index:6 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-start !important;
+  gap:0 !important;
+  color:#fff !important;
+  text-shadow:0 1px 5px rgba(0,0,0,.5) !important;
+  font-size:15px !important;
+  pointer-events:none !important;
+}
+.matchInfoOverlay .countryLine{display:flex !important;align-items:center !important;gap:9px !important;}
+.matchInfoOverlay .countryLine span:first-child{font-size:24px !important;line-height:1 !important;}
+.matchInfoOverlay #matchFlag{font-size:22px !important;line-height:1 !important;}
+.matchInfoOverlay #matchCountry{font-size:15px !important;}
+.matchInfoOverlay .genderLine,.matchInfoOverlay .connectionLine,.matchInfoOverlay .reportOverlayBtn{display:none !important;}
+#safetyBtn{display:none !important;}
+@media(max-width:700px){
+  .matchInfoOverlay{left:12px !important;bottom:12px !important;font-size:14px !important;}
+  .matchInfoOverlay .countryLine{gap:8px !important;}
+  .matchInfoOverlay .countryLine span:first-child{font-size:22px !important;}
+  .matchInfoOverlay #matchFlag{font-size:20px !important;}
+  .matchInfoOverlay #matchCountry{font-size:14px !important;}
+}
+
+/* Final requested chat/input and clean control-area fixes */
+#chatOverlayInput{font-size:16px !important;}
+.chatOverlayForm input{font-size:16px !important;}
+.videoBottom{background:transparent !important;box-shadow:none !important;border:0 !important;}
+.controls,.control,.nextControl{box-shadow:none !important;}
+.control,.nextControl{border:0 !important;}
+
+/* Profile / account panel */
+.accountPanel{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-start;justify-content:flex-end;padding:78px 18px 18px;background:rgba(0,0,0,.28);backdrop-filter:blur(2px)}
+.accountPanel.hidden{display:none!important}
+.accountCard{width:min(430px,calc(100vw - 28px));max-height:calc(100vh - 96px);overflow:auto;background:#10121c;border:1px solid #30364b;border-radius:22px;padding:20px;box-shadow:0 18px 60px rgba(0,0,0,.25)}
+.accountHeader{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}.accountHeader b{display:block;font-size:22px}.accountHeader small{display:block;color:#9da4b8;margin-top:3px}.accountIdentity{display:flex;align-items:center;gap:14px;padding:14px;border:1px solid #2d3347;border-radius:16px;margin-bottom:16px}.accountPhoto{width:68px;height:68px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#191d2b;font-size:30px;flex:0 0 auto}.accountPhoto img{width:100%;height:100%;object-fit:cover}.accountIdentity h2{margin:0 0 4px;font-size:20px}.accountIdentity p{margin:0;color:#8f96aa;font-size:12px;word-break:break-all}.accountDetails{display:grid;gap:12px}.accountDetails label,.accountDetails>div{display:grid;gap:7px;color:#a8aec0;font-size:13px}.accountDetails input{width:100%;padding:12px 13px;border:1px solid #30364b;border-radius:12px;background:#080a10;color:#fff;font:inherit;outline:none}.accountDetails input:focus{border-color:#ff2a80}.accountGender{display:flex;gap:7px}.accountGender button{flex:1;padding:10px 7px;border:1px solid #30364b;border-radius:11px;background:#151824;color:#dfe3ec;font-weight:700}.accountGender button.active{border-color:#ff2a80;background:#321528}.accountRow{display:flex!important;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #252a3a}.accountRow b{color:#fff}.accountActions{display:flex;gap:10px;margin-top:18px}.accountActions .bigBtn{flex:1}.logoutAction{border:1px solid #6d344e;background:transparent;color:#ff7cac;border-radius:12px;padding:0 15px;font-weight:700}.accountCard .formMsg{min-height:18px}
+@media(max-width:700px){.accountPanel{padding:64px 10px 10px}.accountCard{width:100%;max-height:calc(100vh - 74px);border-radius:18px;padding:16px}.accountGender button{font-size:12px}.accountActions{position:sticky;bottom:0;background:#10121c;padding-top:10px}}
+.accountPhotoBtn{display:inline-flex;align-items:center;justify-content:center;align-self:center;padding:8px 10px;border:1px solid #30364b;border-radius:10px;background:#151824;color:#dfe3ec;font-size:11px;font-weight:700;cursor:pointer}
+
+
+/* Final requested chat + provider logo fixes */
+.authBtn{display:flex;align-items:center;justify-content:center;gap:10px}
+.providerLogo{display:inline-flex;align-items:center;justify-content:center;width:25px;height:25px;flex:0 0 25px;font-weight:900;line-height:1}
+.googleLogo{font-family:Arial,sans-serif;font-size:23px;font-weight:700;background:conic-gradient(from -45deg,#4285f4 0 25%,#34a853 25% 50%,#fbbc05 50% 75%,#ea4335 75% 100%);color:transparent;background-clip:text;-webkit-background-clip:text}
+.facebookLogo{font-family:Arial,sans-serif;font-size:25px;font-weight:900;color:#fff;align-items:flex-end}
+.phoneLogo{font-size:21px;color:#fff}
+
+/* Messages stay in one clean left-aligned column instead of jumping around the video. */
+.chatOverlayMessages{left:18px !important;right:auto !important;bottom:132px !important;width:min(78vw,360px) !important;max-width:none !important;display:flex !important;flex-direction:column !important;align-items:flex-start !important;justify-content:flex-end !important;gap:4px !important;overflow:hidden !important;pointer-events:none !important;text-align:left !important}
+.chatOverlayBubble{display:block !important;width:auto !important;max-width:100% !important;margin:0 !important;padding:2px 0 !important;text-align:left !important;white-space:normal !important;word-break:break-word !important;color:#fff !important;font-size:13px !important;line-height:1.3 !important;background:transparent !important;border:0 !important;border-radius:0 !important;box-shadow:none !important;text-shadow:0 1px 3px rgba(0,0,0,.28) !important}
+.chatOverlayBubble strong{font-weight:800;margin-right:4px}
+@media(max-width:700px){
+ .chatOverlayMessages{left:18px !important;bottom:122px !important;width:78vw !important;max-height:42vh !important}
+ .chatOverlayBubble{font-size:13px !important}
+}
+
+
+/* Final requested message-area fix: messages belong only to the local/user video. */
+.localVideo{position:relative !important;}
+.localVideo .chatOverlayMessages{
+  position:absolute !important;
+  left:18px !important;
+  right:18px !important;
+  top:14px !important;
+  bottom:14px !important;
+  width:auto !important;
+  max-width:none !important;
+  max-height:none !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-start !important;
+  justify-content:flex-end !important;
+  gap:5px !important;
+  padding:8px 0 !important;
+  pointer-events:auto !important;
+  z-index:8 !important;
+  scrollbar-width:none !important;
+}
+.localVideo .chatOverlayMessages::-webkit-scrollbar{display:none !important;width:0 !important;height:0 !important;}
+.localVideo .chatOverlayBubble{
+  flex:0 0 auto !important;
+  max-width:100% !important;
+  font-size:13px !important;
+  line-height:1.35 !important;
+  padding:2px 0 !important;
+  margin:0 !important;
+  text-align:left !important;
+}
+/* Keep the conversation visually inside the user's half and never over the upper video. */
+.videoBottom .callHint{display:none !important;}
+.chatComposer{z-index:10 !important;}
+@media(max-width:700px){
+  .localVideo .chatOverlayMessages{left:18px !important;right:18px !important;top:12px !important;bottom:12px !important;}
+  .localVideo .chatOverlayBubble{font-size:13px !important;}
+}
+
+/* Report control on the lower user's video, bottom-left with a small gap above controls. */
+.quickReportBtn{
+  position:absolute !important;
+  left:12px !important;
+  bottom:12px !important;
+  z-index:12 !important;
+  padding:7px 10px !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+  border-radius:9px !important;
+  background:rgba(20,23,35,.30) !important;
+  color:#fff !important;
+  font-size:11px !important;
+  font-weight:700 !important;
+  box-shadow:none !important;
+}
+@media(max-width:700px){
+  .quickReportBtn{left:10px !important;bottom:10px !important;padding:7px 9px !important;font-size:10px !important;}
+}
+
+/* FINAL USER REQUEST — clean lower-video chat + controls, no shadows/gradients */
+.videoTop{background:transparent !important;box-shadow:none !important;}
+.videoBottom{
+  position:absolute !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+  z-index:10 !important;
+  padding:7px 8px 10px !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  border:0 !important;
+}
+.videoBottom .callHint{display:none !important;}
+.controls{box-shadow:none !important;}
+.control,.nextControl{box-shadow:none !important;}
+
+/* Chat stays only in the lower/user video, above the bottom controls. */
+.localVideo .chatOverlayMessages{
+  left:18px !important;
+  right:18px !important;
+  top:48px !important;
+  bottom:58px !important;
+  width:auto !important;
+  max-height:none !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  padding:4px 0 !important;
+  gap:5px !important;
+  justify-content:flex-end !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+}
+.localVideo .chatOverlayBubble{
+  text-shadow:none !important;
+  box-shadow:none !important;
+  background:transparent !important;
+  border:0 !important;
+}
+
+/* Report is fixed at the TOP-LEFT of the lower/user video area. */
+.quickReportBtn{
+  left:10px !important;
+  top:10px !important;
+  right:auto !important;
+  bottom:auto !important;
+  z-index:12 !important;
+  box-shadow:none !important;
+}
+
+@media(max-width:700px){
+  .videoBottom{padding:7px 8px 10px !important;}
+  .localVideo .chatOverlayMessages{
+    left:18px !important;
+    right:18px !important;
+    top:48px !important;
+    bottom:58px !important;
+  }
+  .quickReportBtn{
+    left:10px !important;
+    top:10px !important;
+    bottom:auto !important;
+  }
+}
+
+/* Settings detail content */
+.settingsDetail{flex:1;min-height:0;display:flex;flex-direction:column}.settingsDetailHeader{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid #292d3e}.settingsDetailHeader button{border:0;background:transparent;color:#ff8bb7;font-weight:800;cursor:pointer}.settingsDetailBody{padding:16px;overflow:auto;color:#d9dce6}.settingChoices{display:grid;gap:10px}.detailChoice{width:100%;text-align:left;padding:14px;border-radius:12px;border:1px solid #303448;background:#171a25;color:#fff;cursor:pointer}.detailChoice.active{border-color:#ff277f}.detailChoice b,.detailChoice span{display:block}.detailChoice span{color:#858b9e;font-size:12px;margin-top:4px}.detailText p,.safetyChecklist p{line-height:1.55;margin:0 0 13px}.detailText b,.safetyChecklist b{color:#fff}.detailNote{color:#858b9e;font-size:12px;line-height:1.5}.reportReasons{display:grid;gap:9px}.reportReasons>button{padding:14px 15px;text-align:left;border:1px solid #303448;background:#171a25;color:#fff;border-radius:10px;cursor:pointer;font-size:15px;line-height:1.25}.reportReasons>button.active{border-color:#ff277f;background:#21131d;box-shadow:0 0 0 1px #ff277f inset}.reportReasons>button:active{transform:scale(.995)}.blockOption,.privacyToggle{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 0;border-top:1px solid #292d3e}.blockOption small,.privacyToggle small{display:block;color:#858b9e;font-size:12px;line-height:1.35;margin-top:3px}.blockOption input,.privacyToggle input{width:20px;height:20px;accent-color:#ff277f;flex:0 0 auto}.privacyIntro p{color:#858b9e;font-size:12px;line-height:1.5;margin:5px 0 14px}.privacyOptions{display:grid;gap:0}.privacyNote{margin-top:14px;padding:12px;border:1px solid #303448;border-radius:10px;background:#151824;color:#9da3b5;font-size:12px;line-height:1.5}.privacyNote b{color:#fff}.detailDanger{width:100%;padding:13px;border:0;border-radius:10px;background:#d92d67;color:#fff;font-weight:850;cursor:pointer}.logoutDetail p{line-height:1.55}
+
+.reportNotice{font-size:12px;line-height:1.4;opacity:.7;margin:8px 0 12px}
+
+/* REPORT & BLOCK — keep the entire panel inside the mobile viewport */
+.safetyPanel{
+  position:fixed !important;
+  top:max(12px, env(safe-area-inset-top)) !important;
+  bottom:max(12px, env(safe-area-inset-bottom)) !important;
+  right:50% !important;
+  transform:translateX(50%) !important;
+  width:min(460px,calc(100vw - 20px)) !important;
+  max-height:calc(100dvh - max(24px, env(safe-area-inset-top) + env(safe-area-inset-bottom) + 24px)) !important;
+  height:auto !important;
+  padding-bottom:12px !important;
+  overflow:hidden !important;
+  z-index:999 !important;
+}
+.safetyPanel .panelHeader,
+.safetyPanel>p,
+.safetyPanel .reportNotice,
+.safetyPanel .reportAction{flex-shrink:0 !important;}
+.safetyPanel .reportReasons{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  padding:0 18px 8px !important;
+  -webkit-overflow-scrolling:touch !important;
+}
+.safetyPanel .reportReasons>button{width:100% !important;}
+@media(max-width:700px){
+  .safetyPanel{
+    top:max(10px, env(safe-area-inset-top)) !important;
+    bottom:max(10px, env(safe-area-inset-bottom)) !important;
+    width:calc(100vw - 20px) !important;
+    max-height:calc(100dvh - max(20px, env(safe-area-inset-top) + env(safe-area-inset-bottom) + 20px)) !important;
+  }
+}
+
+
+/* Remote stream must sit above the searching placeholder once a peer track arrives. */
+#remoteVideoEl{z-index:1 !important;}
+#remoteVideo.hasRemoteVideo .remotePlaceholder{display:none !important;}
+#remoteVideo.hasRemoteVideo #remoteVideoEl{display:block !important;visibility:visible !important;opacity:1 !important;}
+
+/* FINAL RESPONSIVE VIDEO LAYOUT: desktop/tablet side-by-side, mobile stacked. */
+.videoStage{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  grid-template-rows:1fr !important;
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  overflow:hidden !important;
+  background:#030407 !important;
+}
+.videoStage > .remoteVideo,
+.videoStage > .localVideo{
+  grid-row:1 !important;
+  position:relative !important;
+  inset:auto !important;
+  width:100% !important;
+  height:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  max-width:none !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  overflow:hidden !important;
+  background:#030407 !important;
+}
+.videoStage > .remoteVideo{grid-column:1 !important;}
+.videoStage > .localVideo{grid-column:2 !important;}
+.videoStage > .remoteVideo video,
+.videoStage > .localVideo video,
+.videoStage #cameraPreview{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  max-width:none !important;
+  max-height:none !important;
+  display:block !important;
+  object-fit:cover !important;
+  object-position:center !important;
+  background:#000 !important;
+}
+.remoteVideo.hasRemoteVideo .remotePlaceholder{display:none !important;}
+.remoteVideo.hasRemoteVideo{background:#000 !important;}
+.enableRemoteAudio{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  transform:translate(-50%,-50%) !important;
+  z-index:9 !important;
+  border:0 !important;
+  border-radius:999px !important;
+  padding:13px 18px !important;
+  background:#ff277f !important;
+  color:#fff !important;
+  font-weight:800 !important;
+  box-shadow:0 8px 28px #0009 !important;
+}
+.videoTop,.videoBottom,.reactionBar,.sidePanel,.safetyPanel{z-index:10 !important;}
+.videoTop{pointer-events:none;}
+.videoTop > *{pointer-events:auto;}
+.videoBottom{position:absolute !important;left:0;right:0;bottom:0;}
+@media (max-width:900px){
+  .videoStage{grid-template-columns:1fr !important;grid-template-rows:1fr 1fr !important;}
+  .videoStage > .remoteVideo{grid-column:1 !important;grid-row:1 !important;}
+  .videoStage > .localVideo{grid-column:1 !important;grid-row:2 !important;}
+}
+@media (min-width:901px){
+  .videoTop{height:70px !important;padding:0 24px !important;}
+  .smallBrand{font-size:28px !important;}
+  .videoBottom{padding:12px 24px 18px !important;}
+  .callHint{font-size:13px !important;}
+  .controls{gap:12px !important;}
+  .control{width:52px !important;height:52px !important;}
+  .nextControl{width:112px !important;height:52px !important;}
+  .matchInfoOverlay{z-index:7 !important;}
+  .quickReportBtn{z-index:8 !important;}
+}
+
+
+/* FINAL ACCESS + CONTROL POLISH */
+.mediaPermissionBtn{display:inline-flex;align-items:center;justify-content:center;margin:0 auto 9px;padding:9px 14px;border:1px solid rgba(255,255,255,.2);border-radius:12px;background:#ff277f;color:#fff;font-weight:800;font-size:12px;cursor:pointer;}
+.mediaPermissionBtn.hidden{display:none !important;}
+.controls{justify-content:center !important;gap:18px !important;padding:0 8px !important;}
+#micBtn{order:1 !important;}
+#camBtn{order:2 !important;}
+#chatBtn{order:3 !important;}
+#nextBtn{order:4 !important;margin-left:22px !important;}
+@media(max-width:700px){.controls{gap:16px !important;padding:0 6px !important;}#nextBtn{margin-left:16px !important;}}
+
+
+/* Final responsive video layout + camera switch */
+.videoStage{display:flex;min-height:0;}
+.remoteVideo{position:relative;inset:auto;flex:1;min-width:0;overflow:hidden;}
+.remoteVideo>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#030407;}
+.localVideo{position:absolute;right:16px;top:80px;width:min(30vw,260px);z-index:5;}
+.videoStage:has(.remoteVideo.hasRemoteVideo) .remoteVideo .remotePlaceholder{display:none;}
+@media(min-width:701px){
+  .videoStage{gap:10px;padding:74px 16px 16px;}
+  .remoteVideo{border-radius:16px;min-height:0;}
+  .localVideo{position:relative;right:auto;top:auto;width:38%;max-width:none;min-width:280px;height:auto;aspect-ratio:16/9;border-radius:16px;align-self:center;}
+  .localVideo video{object-fit:cover;}
+  .videoBottom{padding:12px 16px 18px;}
+}
+@media(max-width:700px){
+  .videoStage{display:block;}
+  .remoteVideo{position:absolute;inset:0;}
+  .localVideo{width:110px;top:76px;right:12px;}
+  .controls{gap:10px;align-items:center;}
+  .control,.nextControl{flex:0 0 auto;}
+}
+
+
+/* VEYORA 3-option UPI payment */
+.payNowBtn{grid-column:1/-1;width:100%;border:0;border-radius:12px;padding:14px;background:linear-gradient(90deg,#ff277f,#9a4fff);color:#fff;font-weight:900;font-size:15px;cursor:pointer}.payNowBtn.hidden{display:none!important}.paymentModal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:18px}.paymentModal.hidden{display:none!important}.paymentCard{width:min(430px,100%);max-height:90vh;overflow:auto;background:#10121c;border:1px solid #303448;border-radius:20px;padding:18px;box-shadow:0 24px 80px #000c}.paymentHeader{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.paymentHeader b{display:block;font-size:21px}.paymentHeader small{display:block;color:#9da4b8;margin-top:4px}.paymentOptions{display:grid;gap:10px}.paymentOption{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:14px;border:1px solid #303448;border-radius:14px;background:#171a25;color:#fff;cursor:pointer}.paymentOption:hover{border-color:#ff277f}.paymentOption>span:nth-child(2){flex:1}.paymentOption small{display:block;color:#9ba0b3;margin-top:3px;font-size:12px}.paymentOption>strong{font-size:22px;color:#9da4b8}.payIcon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-weight:900;font-size:21px;flex:0 0 auto}.phonePeIcon{background:#8b4be8}.googlePayIcon{background:#fff;color:#4285f4}.qrIcon{background:#272b3a;color:#fff}.qrBox{margin-top:14px;text-align:center;padding:14px;border:1px solid #303448;border-radius:15px;background:#090b11}.qrBox.hidden{display:none!important}.qrBox img{display:block;width:min(300px,100%);margin:0 auto;border-radius:8px;background:#fff}.qrBox p{margin:10px 0 0;color:#c7cbd6;font-size:13px}.paymentNote{margin:13px 2px 0;color:#858b9e;font-size:11px;line-height:1.5}@media(max-width:700px){.paymentModal{padding:10px}.paymentCard{border-radius:18px;padding:15px}}
+.legalLinks{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:12px}.legalLinks a{color:#aeb6cc;text-decoration:none}.legalLinks a:hover{text-decoration:underline}.settingsLegal{justify-content:flex-start;padding:12px 16px;margin:0;border-bottom:1px solid rgba(255,255,255,.08)}.legalPage{min-height:100vh;background:#080a11;color:#f4f6fb;padding:28px 16px}.legalCard{max-width:760px;margin:0 auto;background:#111522;border:1px solid #2b3042;border-radius:20px;padding:28px;line-height:1.65}.legalCard h1{font-size:34px;margin:24px 0 6px}.legalCard h2{margin-top:26px;font-size:20px}.legalCard a{color:#ff75ac}.legalCard p{color:#c8cedd}.legalCard .logo{font-size:28px;text-decoration:none;font-weight:900;color:#fff}.legalCard .logo span{color:#ff277f}

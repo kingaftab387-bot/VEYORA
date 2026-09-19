@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Veyora — Random Video Chat</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="authScreen" class="screenPage authScreen">
+    <div class="authHero">
+      <div class="brand">Ve<span>yora</span></div>
+      <div class="authPill">🔞 18+ ADULTS ONLY</div>
+      <h1>Meet someone new.<br><span>Right now.</span></h1>
+      <p>Random video chat with country matching.</p>
+    </div>
+    <div class="authCard">
+      <h2>Login / Sign up</h2>
+      <p class="muted">Create your Veyora account to continue.</p>
+      <button class="authBtn google" id="googleBtn" type="button"><span class="providerLogo googleLogo" aria-hidden="true">G</span><span>Continue with Google</span></button>
+      <button class="authBtn fb" id="facebookBtn" type="button"><span class="providerLogo facebookLogo" aria-hidden="true">f</span><span>Continue with Facebook</span></button>
+      <p id="authMsg" class="authmsg"></p>
+      <small>By continuing, you confirm that you are 18+.</small><div class="legalLinks"><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a><a href="data-deletion.html">Delete Data</a></div>
+    </div>
+  </div>
+
+  <div id="profileScreen" class="screenPage hidden">
+    <header class="simpleHeader"><a class="logo" href="#">Ve<span>yora</span></a><span>Step 1 of 2</span></header>
+    <main class="formWrap">
+      <div class="stepBadge">YOUR PROFILE</div>
+      <h1>Tell us about you</h1>
+      <p class="muted">Add your details before you start matching.</p>
+      <div class="photoBox">
+        <div id="photoPreview" class="photoPreview">👤</div>
+        <label class="uploadBtn">Add profile photo<input id="photoInput" type="file" accept="image/*" hidden></label>
+      </div>
+      <label class="field">Name<input id="profileName" type="text" placeholder="Your name" maxlength="40"></label>
+      <label class="field">Date of birth<input id="dob" type="date"></label>
+      <div class="field"><span>Gender</span><div class="genderGrid"><button type="button" data-gender="Male">♂ Male</button><button type="button" data-gender="Female">♀ Female</button><button type="button" data-gender="Other">⚧ Other</button></div></div>
+      <button id="profileNext" class="bigBtn" type="button">Next →</button>
+      <p id="profileMsg" class="formMsg"></p>
+    </main>
+  </div>
+
+  <div id="matchScreen" class="screenPage hidden">
+    <header class="mainHeader"><a class="logo" href="#">Ve<span>yora</span></a><div class="online"><i></i><span id="onlineCount">0</span> people online</div><button id="profileBtn" class="ghostBtn" type="button">Profile</button></header>
+    <main class="matchWrap">
+      <div class="matchTitle"><div class="authPill">🌍 MATCH</div><h1 data-i18n="Who do you want to meet?">Who do you want to meet?</h1><p class="muted" data-i18n="Choose a country and start a random video chat.">Choose a country and start a random video chat.</p></div>
+      <div class="countryCard">
+        <label for="country" data-i18n="Country">Country</label>
+        <select id="country"><option value="all">🌍 All countries</option><option value="IN">🇮🇳 India</option><option value="AL">🇦🇱 Albania</option><option value="AR">🇦🇷 Argentina</option><option value="AM">🇦🇲 Armenia</option><option value="AT">🇦🇹 Austria</option><option value="BY">🇧🇾 Belarus</option><option value="BE">🇧🇪 Belgium</option><option value="BA">🇧🇦 Bosnia and Herzegovina</option><option value="BR">🇧🇷 Brazil</option><option value="BG">🇧🇬 Bulgaria</option><option value="CA">🇨🇦 Canada</option><option value="CL">🇨🇱 Chile</option><option value="CN">🇨🇳 China</option><option value="CO">🇨🇴 Colombia</option><option value="HR">🇭🇷 Croatia</option><option value="CZ">🇨🇿 Czechia</option><option value="DK">🇩🇰 Denmark</option><option value="FI">🇫🇮 Finland</option><option value="FR">🇫🇷 France</option><option value="DE">🇩🇪 Germany</option><option value="GR">🇬🇷 Greece</option><option value="HU">🇭🇺 Hungary</option><option value="ID">🇮🇩 Indonesia</option><option value="IE">🇮🇪 Ireland</option><option value="IL">🇮🇱 Israel</option><option value="IT">🇮🇹 Italy</option><option value="JP">🇯🇵 Japan</option><option value="KZ">🇰🇿 Kazakhstan</option><option value="KR">🇰🇷 Korea</option><option value="LV">🇱🇻 Latvia</option><option value="LT">🇱🇹 Lithuania</option><option value="LU">🇱🇺 Luxembourg</option><option value="MY">🇲🇾 Malaysia</option><option value="MX">🇲🇽 Mexico</option><option value="MD">🇲🇩 Moldova</option><option value="NL">🇳🇱 Netherlands</option><option value="NZ">🇳🇿 New Zealand</option><option value="MK">🇲🇰 North Macedonia</option><option value="NO">🇳🇴 Norway</option><option value="PE">🇵🇪 Peru</option><option value="PH">🇵🇭 Philippines</option><option value="PL">🇵🇱 Poland</option><option value="PT">🇵🇹 Portugal</option><option value="RO">🇷🇴 Romania</option><option value="RU">🇷🇺 Russia</option><option value="RS">🇷🇸 Serbia</option><option value="SG">🇸🇬 Singapore</option><option value="SK">🇸🇰 Slovakia</option><option value="SI">🇸🇮 Slovenia</option><option value="ZA">🇿🇦 South Africa</option><option value="ES">🇪🇸 Spain</option><option value="SE">🇸🇪 Sweden</option><option value="CH">🇨🇭 Switzerland</option><option value="TW">🇹🇼 Taiwan</option><option value="TH">🇹🇭 Thailand</option><option value="TR">🇹🇷 Turkey</option><option value="UA">🇺🇦 Ukraine</option><option value="GB">🇬🇧 United Kingdom</option><option value="US">🇺🇸 United States</option><option value="VE">🇻🇪 Venezuela</option></select>
+      </div>
+      <div class="accessCard">
+        <div class="accessHead"><div><b data-i18n="Choose your chat">Choose your chat</b><p class="muted" data-i18n="Select Free or Paid before you start matching.">Select Free or Paid before you start matching.</p></div><span class="authPill">FREE / PAID</span></div>
+        <div class="accessGrid">
+          <button id="freeOption" class="accessOption active" type="button"><strong data-i18n="🆓 Free Chat">🆓 Free Chat</strong><small data-i18n="Random matching · No payment">Random matching · No payment</small></button>
+          <button id="paidOption" class="accessOption" type="button"><strong data-i18n="♀ Paid Match">♀ Paid Match</strong><small data-i18n="Premium matching · Subscription">Premium matching · Subscription</small></button>
+        </div>
+        <div id="paidPlans" class="paidPlans hidden">
+          <button type="button" data-plan="₹50 · 1 Day"><b>₹50</b><span data-i18n="1 Day">1 Day</span></button>
+          <button type="button" data-plan="₹200 · 1 Week"><b>₹200</b><span data-i18n="1 Week · Best Value">1 Week · Best Value</span></button>
+          <button type="button" data-plan="₹599 · 1 Month"><b>₹599</b><span data-i18n="1 Month">1 Month</span></button>
+          <p id="planMsg" class="formMsg"></p>
+          <button id="payNowBtn" class="payNowBtn hidden" type="button" data-i18n="Pay Now →">Pay Now →</button>
+        </div>
+      </div>
+
+      <div id="paymentModal" class="paymentModal hidden" aria-hidden="true">
+        <div class="paymentCard">
+          <div class="paymentHeader"><div><b>Razorpay Payment</b><small id="paymentPlanText">Selected plan</small></div><button id="paymentClose" class="panelClose" type="button">×</button></div>
+          <div class="paymentOptions">
+            <button id="razorpayPayBtn" class="paymentOption" type="button"><span class="payIcon qrIcon">₹</span><span><b>Pay securely with Razorpay</b><small>UPI, cards, netbanking and supported methods</small></span><strong>›</strong></button>
+          </div>
+          <p id="paymentStatus" class="paymentNote">Your selected VEYORA plan will be opened in Razorpay Checkout.</p>
+        </div>
+      </div>
+      <button id="startBtn" class="startBtn" type="button"><span data-i18n="Start Video Chat">Start Video Chat</span> <span>→</span></button>
+    </main>
+  </div>
+
+  <div id="videoScreen" class="videoScreen hidden">
+    <div class="videoTop">
+      <div class="brand smallBrand">Ve<span>yora</span></div>
+      <div class="videoStatus hidden"><span class="liveDot"></span><span id="videoStatusText">Searching for someone…</span></div>
+      <button id="settingsBtn" class="circleBtn" type="button" aria-label="Settings">⚙️</button>
+      <button id="exitVideo" class="circleBtn" type="button" aria-label="Exit">×</button>
+    </div>
+    <div class="videoStage">
+      <div id="remoteVideo" class="remoteVideo"><video id="remoteVideoEl" autoplay playsinline preload="auto"></video><button id="enableRemoteAudio" class="enableRemoteAudio hidden" type="button">🔊 Tap for sound</button>
+        <div class="remotePlaceholder">
+          <div class="otherUserAvatar">👤</div>
+          <div class="searchSpinner"></div>
+          <h2 id="searchTitle">Finding a match…</h2>
+          <p>Looking for someone from your selected country.</p>
+        </div>
+        <div class="matchInfoOverlay">
+          <div class="countryLine"><span id="matchGenderIcon">♂</span><span id="matchFlag">🇮🇳</span><span id="matchCountry">India</span></div>
+        </div>
+      </div>
+      <div class="localVideo"><video id="cameraPreview" autoplay muted playsinline></video>
+        <div class="youTag" data-i18n="You">You</div>
+        <div id="chatOverlayMessages" class="chatOverlayMessages"></div>
+        <button id="quickReportBtn" class="quickReportBtn" type="button" aria-label="Report and block user"><span data-i18n="⚠️ Report &amp; Block">⚠️ Report &amp; Block</span></button>
+      </div>
+    </div>
+    <div id="chatComposer" class="chatComposer hidden">
+      <form id="chatOverlayForm" class="chatOverlayForm">
+        <input id="chatOverlayInput" type="text" maxlength="200" placeholder="Type a message…" autocomplete="off">
+        <button type="submit">Send</button>
+      </form>
+    </div>
+    <div class="videoBottom">
+      <div class="callHint" id="callHint">Allow camera & microphone to start.</div><button id="mediaPermissionBtn" class="mediaPermissionBtn hidden" type="button">🎥 Allow Camera & Microphone</button>
+      <div class="controls">
+        <button id="switchCamBtn" class="control" type="button" aria-label="Switch front and back camera">🔄</button>
+        <button id="micBtn" class="control" type="button" aria-label="Microphone">🎙️</button>
+        <button id="camBtn" class="control" type="button" aria-label="Camera">📹</button>
+        <button id="chatBtn" class="control" type="button" aria-label="Chat">💬</button>
+        <button id="nextBtn" class="nextControl" type="button">Next →</button>
+      </div>
+    </div>
+
+    <aside id="chatPanel" class="sidePanel hidden">
+      <div class="panelHeader"><b>Chat</b><button class="panelClose" data-close-panel="chatPanel" type="button">×</button></div>
+      <div id="chatMessages" class="chatMessages"><p class="emptyChat">Be respectful and follow the chat rules.</p></div>
+      <form id="chatForm" class="chatForm"><input id="chatInput" type="text" maxlength="200" placeholder="Type a message…" autocomplete="off"><button type="submit">Send</button></form>
+    </aside>
+
+    <aside id="settingsPanel" class="sidePanel hidden">
+      <div class="panelHeader"><b>Veyora Settings</b><button class="panelClose" data-close-panel="settingsPanel" type="button">×</button></div>
+      <div id="settingsList" class="settingsList"><div class="legalLinks settingsLegal"><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a><a href="data-deletion.html">Delete Data</a></div>
+        <button type="button" class="settingItem" id="languageSetting"><span>🌐</span><span><b data-i18n="Language">Language</b><small id="languageCurrent">English</small></span><strong>›</strong></button>
+        <button type="button" class="settingItem" id="rulesSetting"><span>📄</span><span><b data-i18n="Chat Rules">Chat Rules</b><small>Keep conversations respectful</small></span><strong>›</strong></button>
+        <button type="button" class="settingItem" id="reminderSetting"><span>⚠️</span><span><b data-i18n="Safety Reminder">Safety Reminder</b><small>Never share passwords or payment details</small></span><strong>›</strong></button>
+        <button type="button" class="settingItem" id="logoutSetting"><span>🚪</span><span><b data-i18n="Log Out">Log Out</b><small>Sign out of Veyora</small></span><strong>›</strong></button>
+      </div>
+      <div id="settingsMessage" class="settingsMessage"></div>
+      <div id="settingsDetail" class="settingsDetail hidden">
+        <div class="settingsDetailHeader"><button id="settingsDetailBack" type="button">← Back</button><b id="settingsDetailTitle">Settings</b></div>
+        <div id="settingsDetailBody" class="settingsDetailBody"></div>
+      </div>
+    </aside>
+
+    <div id="safetyPanel" class="safetyPanel hidden">
+      <div class="panelHeader"><b>Report & Block</b><button class="panelClose" data-close-panel="safetyPanel" type="button">×</button></div>
+      <p>Report this user for a rule violation. You will also stop seeing this user in future chats.</p>
+      <div class="reportReasons">
+        <button type="button" data-report-reason="Harassment or bullying">Harassment or bullying</button>
+        <button type="button" data-report-reason="Nudity or sexual content">Nudity or sexual content</button>
+        <button type="button" data-report-reason="Hate speech or discrimination">Hate speech or discrimination</button>
+        <button type="button" data-report-reason="Threats or violence">Threats or violence</button>
+        <button type="button" data-report-reason="Scam, fraud or asking for money">Scam, fraud or asking for money</button>
+        <button type="button" data-report-reason="Underage or unsafe behavior">Underage or unsafe behavior</button>
+        <button type="button" data-report-reason="Other inappropriate behavior">Other inappropriate behavior</button>
+      </div>
+      <p class="reportNotice">Reports help keep VEYORA safe. Do not report someone just because you disagree with them.</p>
+      <button id="safetyReport" class="reportAction" type="button">🛡️ Confirm Report & Block</button>
+    </div>
+  </div>
+
+  <div id="accountPanel" class="accountPanel hidden" aria-hidden="true">
+    <div class="accountCard">
+      <div class="accountHeader"><div><b>My Profile</b><small>Your Veyora account</small></div><button id="accountClose" class="panelClose" type="button">×</button></div>
+      <div class="accountIdentity">
+        <div id="accountPhoto" class="accountPhoto">👤</div><label class="accountPhotoBtn">Change photo<input id="accountPhotoInput" type="file" accept="image/*" hidden></label>
+        <div><h2 id="accountName">Your name</h2><p id="accountId">Veyora ID: —</p></div>
+      </div>
+      <div class="accountDetails">
+        <label>Name<input id="accountNameInput" type="text" maxlength="40"></label>
+        <label>Date of birth<input id="accountDobInput" type="date"></label>
+        <div><span>Gender</span><div class="accountGender"><button type="button" data-account-gender="Male">♂ Male</button><button type="button" data-account-gender="Female">♀ Female</button><button type="button" data-account-gender="Other">⚧ Other</button></div></div>
+        <div class="accountRow"><span>Plan</span><b id="accountPlan">Free Chat</b></div>
+        <div class="accountRow"><span>Account information</span><b id="accountLoginMethod">Saved on this device</b></div>
+      </div>
+      <div class="accountActions"><button id="saveAccountBtn" class="bigBtn" type="button">Save changes</button><button id="accountLogoutBtn" class="logoutAction" type="button">Log out</button></div>
+      <p id="accountMsg" class="formMsg"></p>
+    </div>
+  </div>
+</div>
+<!-- No external auth CDN required: app.js includes a direct Supabase Auth fallback for restricted networks. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
