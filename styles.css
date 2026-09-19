@@ -917,3 +917,9 @@
   .videoStage > .remoteVideo,
   .videoStage > .localVideo{width:100% !important;height:100% !important;}
 }
+
+/* PROFILE PHOTO DURING MATCH: no loading spinner, no floating play control. */
+.searchSpinner{display:none !important;}
+.enableRemoteAudio{display:none !important;}
+.otherUserAvatar{overflow:hidden;}
+.otherUserAvatar img{width:100%;height:100%;display:block;object-fit:cover;border-radius:50%;}

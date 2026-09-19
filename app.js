@@ -25,6 +25,22 @@ function accountGet(key,fallback=null){try{const v=localStorage.getItem(accountS
 function accountSet(key,value){try{localStorage.setItem(accountStorageKey(key),value)}catch(e){}}
 function accountRemove(key){try{localStorage.removeItem(accountStorageKey(key))}catch(e){}}
 
+function updatePaidPlanUI(){
+ const select=$('#paidPlanSelect'), msgEl=$('#planMsg'), payBtn=$('#payNowBtn');
+ if(!select || !msgEl || !payBtn) return;
+ const plan=String(select.value||selectedPlan||'');
+ selectedPlan=plan;
+ if(!plan){
+   msgEl.textContent='Choose a paid plan.';
+   payBtn.classList.add('hidden');
+   return;
+ }
+ const info=getPlanInfo();
+ const isActivePurchasedPlan=info.active && info.plan===plan;
+ msgEl.textContent=isActivePurchasedPlan ? 'Selected: '+plan+' · Active' : 'Selected: '+plan;
+ payBtn.classList.toggle('hidden',isActivePurchasedPlan);
+}
+
 function setAccess(type){
  chatAccess=type;
  accountSet('veyoraAccess',type);
@@ -41,8 +57,7 @@ function setAccess(type){
  }else{
    selectedPlan=accountGet('veyoraPlan','')||accountGet('veyoraPaidPlan','')||'';
    if($('#paidPlanSelect')) $('#paidPlanSelect').value=selectedPlan;
-   $('#planMsg').textContent=selectedPlan?'Selected: '+selectedPlan:'Choose a paid plan.';
-   $('#payNowBtn').classList.toggle('hidden',!selectedPlan);
+   updatePaidPlanUI();
  }
 }
 
@@ -252,7 +267,7 @@ async function init(){
  $('#googleBtn').onclick=()=>oauth('google');
  $('#facebookBtn').onclick=()=>oauth('facebook');
 
- $('#profileNext').onclick=saveProfile;$('#startBtn').onclick=startVideo;$('#chatTypeSelect').onchange=e=>setAccess(e.target.value);$('#paidPlanSelect').onchange=e=>{selectedPlan=e.target.value;accountSet('veyoraPlan',selectedPlan);$('#planMsg').textContent=selectedPlan?'Selected: '+selectedPlan:'Choose a paid plan.';$('#payNowBtn').classList.toggle('hidden',!selectedPlan)};$('#payNowBtn').onclick=openPaymentModal;$('#paymentClose').onclick=closePaymentModal;$('#razorpayPayBtn').onclick=startRazorpayPayment;$('#exitVideo').onclick=exitVideo;$('#nextBtn').onclick=startVideo;
+ $('#profileNext').onclick=saveProfile;$('#startBtn').onclick=startVideo;$('#chatTypeSelect').onchange=e=>setAccess(e.target.value);$('#paidPlanSelect').onchange=e=>{selectedPlan=e.target.value;accountSet('veyoraPlan',selectedPlan);updatePaidPlanUI();};$('#payNowBtn').onclick=openPaymentModal;$('#paymentClose').onclick=closePaymentModal;$('#razorpayPayBtn').onclick=startRazorpayPayment;$('#exitVideo').onclick=exitVideo;$('#nextBtn').onclick=startVideo;
  setAccess(accountGet('veyoraAccess')==='paid'?'paid':'free');
  $('#settingsBtn').onclick=()=>togglePanel('settingsPanel');
  $('#chatBtn').onclick=toggleChatComposer;
@@ -286,7 +301,7 @@ async function init(){
  $('#settingsDetailBack').onclick=closeSettingsDetail;
  $('#safetyReport').onclick=confirmReportAndBlock;$('#quickReportBtn').onclick=reportAndBlock;
  document.querySelectorAll('#safetyPanel [data-report-reason]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#safetyPanel [data-report-reason]').forEach(x=>x.classList.remove('active'));b.classList.add('active');localStorage.setItem('veyoraPendingReportReason',b.dataset.reportReason);});
- $('#remoteVideoEl').onclick=()=>unlockRemoteAudio(); $('#enableRemoteAudio').onclick=unlockRemoteAudio; $('#mediaPermissionBtn').classList.add('hidden'); $('#mediaPermissionBtn').onclick=async()=>{
+ $('#remoteVideoEl').onclick=()=>unlockRemoteAudio(); $('#enableRemoteAudio').onclick=unlockRemoteAudio; $('#enableRemoteAudio').classList.add('hidden'); $('#mediaPermissionBtn').classList.add('hidden'); $('#mediaPermissionBtn').onclick=async()=>{
   if(!navigator.mediaDevices?.getUserMedia){$('#callHint').textContent='This browser cannot access camera/microphone. Use Chrome, Edge, Safari or Firefox on HTTPS.';return;}
   const ok=await requestMediaAgain();
   if(ok){$('#mediaPermissionBtn').classList.add('hidden'); if(matchedUserId) beginPeerCall().catch(()=>{});}
@@ -968,8 +983,15 @@ async function pollForMatch(){
 
 async function showMatchedUser(uid){
   try{
-    const rows=await supabaseProfileRequest('GET',PROFILE_TABLE+'?id=eq.'+encodeURIComponent(uid)+'&select=country,gender,name');
+    const rows=await supabaseProfileRequest('GET',PROFILE_TABLE+'?id=eq.'+encodeURIComponent(uid)+'&select=country,gender,name,avatar_url');
     matchedProfile=rows?.[0]||null;
+    const avatar=$('#otherUserAvatar');
+    if(avatar){
+      const photo=matchedProfile?.avatar_url;
+      avatar.innerHTML=(photo && /^(https?:|data:image\/)/i.test(photo))
+        ? '<img src="'+photo.replace(/\"/g,'&quot;')+'" alt="Profile photo">'
+        : '👤';
+    }
     const countryCode=matchedProfile?.country||'all';
     const sel=$('#country');
     let text='All countries',flag='🌍';
