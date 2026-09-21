@@ -950,3 +950,14 @@
     grid-row:2 !important;
   }
 }
+
+/* Hide the native video play overlay while the remote connection is still being found. */
+.videoStage > .remoteVideo:not(.hasRemoteVideo) > video,
+.videoStage > .remoteVideo:not(.hasRemoteVideo) #remoteVideoEl{
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+.videoStage > .remoteVideo.hasRemoteVideo > video,
+.videoStage > .remoteVideo.hasRemoteVideo #remoteVideoEl{
+  visibility:visible !important;
+}

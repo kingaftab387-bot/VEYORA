@@ -1439,54 +1439,115 @@ async function toggleCam(){
   $('#camBtn').setAttribute('aria-label',camOn?'Turn camera off':'Turn camera on');
 }
 async function switchCamera(){
-  if(!stream || !navigator.mediaDevices?.getUserMedia) return;
-  const current=stream.getVideoTracks()[0];
+  if(!navigator.mediaDevices?.getUserMedia) return;
+
+  const current=stream?.getVideoTracks?.()[0];
   if(!current){$('#callHint').textContent='Camera is not available.';return;}
-  const settings=current.getSettings?.()||{};
-  const facing=settings.facingMode||'user';
-  const nextFacing=facing==='environment'?'user':'environment';
+
+  const currentSettings=current.getSettings?.()||{};
+  const currentId=currentSettings.deviceId||'';
+  const currentFacing=currentSettings.facingMode||'';
+  const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   let nextStream=null;
+
+  // Camera switching is intentionally done by acquiring the replacement track
+  // first, then replacing the old track. This avoids a black camera if the
+  // second request fails on iOS/Android.
+  const getVideo=async (constraints)=>{
+    const s=await navigator.mediaDevices.getUserMedia({video:constraints,audio:false});
+    const t=s?.getVideoTracks?.()[0];
+    if(!t) throw new Error('No camera track returned');
+    return s;
+  };
+
   try{
-    // First try the browser's native front/back selector.
-    try{
-      nextStream=await navigator.mediaDevices.getUserMedia({
-        video:{facingMode:{exact:nextFacing},width:{ideal:1280},height:{ideal:960},aspectRatio:{ideal:4/3}},
-        audio:false
-      });
-    }catch(firstErr){
-      // Some desktop browsers do not expose facingMode. Pick another physical
-      // camera by deviceId instead.
-      const devices=await navigator.mediaDevices.enumerateDevices();
-      const cams=devices.filter(d=>d.kind==='videoinput');
-      if(cams.length<2) throw firstErr;
-      const currentId=settings.deviceId;
-      let target=cams.find(d=>d.deviceId!==currentId);
-      if(!target) target=cams[0];
-      nextStream=await navigator.mediaDevices.getUserMedia({
-        video:{deviceId:{exact:target.deviceId},width:{ideal:1280},height:{ideal:960},aspectRatio:{ideal:4/3}},
-        audio:false
-      });
+    // 1) On phones, ask explicitly for the opposite physical camera.
+    // Use `ideal` first because some Safari/Android camera implementations
+    // reject `exact` even though the requested camera is available.
+    if(isMobile){
+      const targetFacing=currentFacing==='environment'?'user':'environment';
+      const mobileCandidates=[
+        {facingMode:{ideal:targetFacing},width:{ideal:1280},height:{ideal:960}},
+        {facingMode:targetFacing},
+        {facingMode:{exact:targetFacing}}
+      ];
+      for(const c of mobileCandidates){
+        try{ nextStream=await getVideo(c); break; }catch(e){}
+      }
     }
+
+    // 2) Device-ID fallback. This is important on Android devices where
+    // facingMode is unreliable or where multiple cameras are exposed.
+    if(!nextStream){
+      const devices=await navigator.mediaDevices.enumerateDevices().catch(()=>[]);
+      const cams=devices.filter(d=>d.kind==='videoinput' && d.deviceId);
+
+      if(cams.length>=2){
+        const backWords=['back','rear','environment','world','camera2 0','camera 0'];
+        const frontWords=['front','user','facetime','camera2 1','camera 1'];
+        const oppositeWords=(currentFacing==='environment')?frontWords:backWords;
+        const opposite=cams.find(d=>{
+          if(d.deviceId===currentId) return false;
+          const label=(d.label||'').toLowerCase();
+          return oppositeWords.some(w=>label.includes(w));
+        });
+        const target=opposite || cams.find(d=>d.deviceId!==currentId);
+
+        if(target){
+          const candidates=[
+            {deviceId:{exact:target.deviceId},width:{ideal:1280},height:{ideal:960}},
+            {deviceId:{exact:target.deviceId}},
+            {deviceId:target.deviceId}
+          ];
+          for(const c of candidates){
+            try{ nextStream=await getVideo(c); break; }catch(e){}
+          }
+        }
+      }
+    }
+
+    // 3) Final mobile/browser fallback: ask for the opposite facing mode again
+    // without resolution constraints. This handles stricter Android browsers.
+    if(!nextStream && isMobile){
+      const targetFacing=currentFacing==='environment'?'user':'environment';
+      try{ nextStream=await getVideo({facingMode:{exact:targetFacing}}); }catch(e){}
+      if(!nextStream){
+        try{ nextStream=await getVideo({facingMode:targetFacing}); }catch(e){}
+      }
+    }
+
     const newTrack=nextStream?.getVideoTracks?.()[0];
-    if(!newTrack) throw new Error('No replacement camera track');
-    const oldTrack=stream.getVideoTracks()[0];
+    if(!newTrack) throw new Error('No replacement camera available');
+
+    // Replace WebRTC sender before stopping the old track so the remote side
+    // keeps receiving video during the switch.
     if(peer){
       const sender=peer.getSenders().find(s=>s.track?.kind==='video');
       if(sender) await sender.replaceTrack(newTrack);
     }
-    if(oldTrack) oldTrack.stop();
+
+    const oldTrack=stream.getVideoTracks()[0];
     try{stream.removeTrack(oldTrack)}catch(e){}
+    if(oldTrack) oldTrack.stop();
     stream.addTrack(newTrack);
+
     const preview=$('#cameraPreview');
     preview.srcObject=stream;
     preview.muted=true;
     preview.autoplay=true;
     preview.playsInline=true;
-    try{await preview.play()}catch(e){}
+    preview.setAttribute('autoplay','');
+    preview.setAttribute('muted','');
+    preview.setAttribute('playsinline','');
+    await preview.play().catch(()=>{});
+
     $('#callHint').textContent='Camera switched.';
   }catch(e){
     if(nextStream){try{nextStream.getTracks().forEach(t=>t.stop())}catch(x){}}
-    $('#callHint').textContent='Camera switch is not available on this device/browser.';
+    console.warn('Camera switch failed:',e);
+    $('#callHint').textContent=isMobile
+      ? 'Back/front camera is not available on this device.'
+      : 'Another camera is not available on this device.';
   }
 }
 function stopStream(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null} if(remoteStream){remoteStream.getTracks().forEach(t=>t.stop());remoteStream=null}}
