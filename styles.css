@@ -933,3 +933,20 @@
 .videoStage #cameraPreview{
   transform:scaleX(-1) !important;
 }
+
+/* FINAL LAPTOP RESPONSIVE FIX — keep the same 50/50 top-bottom video layout as mobile.
+   Only desktop/tablet layout is changed; camera, mic, payment and matching logic stay untouched. */
+@media (min-width:901px){
+  .videoStage{
+    grid-template-columns:1fr !important;
+    grid-template-rows:1fr 1fr !important;
+  }
+  .videoStage > .remoteVideo{
+    grid-column:1 !important;
+    grid-row:1 !important;
+  }
+  .videoStage > .localVideo{
+    grid-column:1 !important;
+    grid-row:2 !important;
+  }
+}
