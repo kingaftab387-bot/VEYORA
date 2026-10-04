@@ -730,15 +730,19 @@ async function clearMyStaleSignals(){
   }catch(e){console.warn('stale signal cleanup',e)}
 }
 
-function updateLocalCameraMirror(track){
+let currentCameraFacing = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'user' : 'desktop';
+
+function updateLocalCameraMirror(track, forcedFacing=null){
   const preview=$('#cameraPreview');
   if(!preview) return;
   const mobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const facing=track?.getSettings?.().facingMode||'';
+  const reported=track?.getSettings?.().facingMode||'';
+  const facing=forcedFacing || reported || currentCameraFacing;
+  if(facing==='user' || facing==='environment') currentCameraFacing=facing;
   // Self-view is mirrored only for the front/user camera. Rear/environment
   // camera must stay natural so left/right are not reversed.
   const shouldMirror = facing === 'environment' ? false : true;
-  preview.style.transform=shouldMirror?'scaleX(-1)':'scaleX(1)';
+  preview.style.setProperty('transform', shouldMirror ? 'scaleX(-1)' : 'scaleX(1)', 'important');
   preview.dataset.cameraFacing=facing || (mobile?'user':'desktop');
 }
 
@@ -1462,7 +1466,7 @@ async function switchCamera(){
 
   const currentSettings=current.getSettings?.()||{};
   const currentId=currentSettings.deviceId||'';
-  const currentFacing=currentSettings.facingMode||'';
+  const currentFacing=(currentSettings.facingMode==='user'||currentSettings.facingMode==='environment') ? currentSettings.facingMode : currentCameraFacing;
   const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   let nextStream=null;
 
@@ -1482,13 +1486,43 @@ async function switchCamera(){
     // reject `exact` even though the requested camera is available.
     if(isMobile){
       const targetFacing=currentFacing==='environment'?'user':'environment';
-      const mobileCandidates=[
-        {facingMode:{ideal:targetFacing},width:{ideal:1280},height:{ideal:960}},
-        {facingMode:targetFacing},
-        {facingMode:{exact:targetFacing}}
-      ];
-      for(const c of mobileCandidates){
-        try{ nextStream=await getVideo(c); break; }catch(e){}
+      // First prefer the opposite physical camera by deviceId. This is much
+      // more reliable on Android browsers where facingMode may be ignored.
+      const devices=await navigator.mediaDevices.enumerateDevices().catch(()=>[]);
+      const cams=devices.filter(d=>d.kind==='videoinput' && d.deviceId);
+      if(cams.length>=2 && currentId){
+        const backWords=['back','rear','environment','world','main','wide','ultra'];
+        const frontWords=['front','user','facetime','selfie'];
+        const words=targetFacing==='environment'?backWords:frontWords;
+        const labelled=cams.find(d=>d.deviceId!==currentId && words.some(w=>(d.label||'').toLowerCase().includes(w)));
+        const other=cams.find(d=>d.deviceId!==currentId);
+        const target=labelled||other;
+        if(target){
+          try{ nextStream=await getVideo({deviceId:{exact:target.deviceId},width:{ideal:1280},height:{ideal:960}}); }catch(e){}
+          // If Android returned the same physical camera, discard it and try
+          // the facingMode route instead.
+          if(nextStream?.getVideoTracks?.()[0]?.getSettings?.().deviceId===currentId){
+            try{nextStream.getTracks().forEach(t=>t.stop())}catch(e){}
+            nextStream=null;
+          }
+        }
+      }
+      // Fallback to explicit facingMode for devices that expose only one
+      // labelled camera or do not expose stable device IDs.
+      if(!nextStream){
+        const mobileCandidates=[
+          {facingMode:{exact:targetFacing},width:{ideal:1280},height:{ideal:960}},
+          {facingMode:targetFacing},
+          {facingMode:{ideal:targetFacing},width:{ideal:1280},height:{ideal:960}}
+        ];
+        for(const c of mobileCandidates){
+          try{
+            const candidate=await getVideo(c);
+            const id=candidate.getVideoTracks?.()[0]?.getSettings?.().deviceId||'';
+            if(!currentId || id!==currentId){ nextStream=candidate; break; }
+            try{candidate.getTracks().forEach(t=>t.stop())}catch(e){}
+          }catch(e){}
+        }
       }
     }
 
@@ -1500,7 +1534,7 @@ async function switchCamera(){
 
       if(cams.length>=2){
         const backWords=['back','rear','environment','world','camera2 0','camera 0'];
-        const frontWords=['front','user','facetime','camera2 1','camera 1'];
+        const frontWords=['front','user','facetime','selfie','camera2 1','camera 1'];
         const oppositeWords=(currentFacing==='environment')?frontWords:backWords;
         const opposite=cams.find(d=>{
           if(d.deviceId===currentId) return false;
@@ -1534,7 +1568,10 @@ async function switchCamera(){
 
     const newTrack=nextStream?.getVideoTracks?.()[0];
     if(!newTrack) throw new Error('No replacement camera available');
-    updateLocalCameraMirror(newTrack);
+    const actualReported=newTrack.getSettings?.().facingMode||'';
+    const newFacing=(actualReported==='user'||actualReported==='environment') ? actualReported : (isMobile ? (currentFacing==='environment'?'user':'environment') : 'desktop');
+    currentCameraFacing=newFacing;
+    updateLocalCameraMirror(newTrack,newFacing);
 
     // Replace WebRTC sender before stopping the old track so the remote side
     // keeps receiving video during the switch.

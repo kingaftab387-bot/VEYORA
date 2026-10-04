@@ -931,7 +931,7 @@
 }
 .videoStage > .localVideo video,
 .videoStage #cameraPreview{
-  transform:scaleX(-1) !important;
+  transform:none;
 }
 
 /* FINAL LAPTOP RESPONSIVE FIX — keep the same 50/50 top-bottom video layout as mobile.
@@ -942,11 +942,11 @@
     grid-template-columns:1fr 1fr !important;
     grid-template-rows:1fr !important;
   }
-  .videoStage > .remoteVideo{
+  .videoStage > .localVideo{
     grid-column:1 !important;
     grid-row:1 !important;
   }
-  .videoStage > .localVideo{
+  .videoStage > .remoteVideo{
     grid-column:2 !important;
     grid-row:1 !important;
   }
@@ -961,4 +961,45 @@
 .videoStage > .remoteVideo.hasRemoteVideo > video,
 .videoStage > .remoteVideo.hasRemoteVideo #remoteVideoEl{
   visibility:visible !important;
+}
+
+
+/* VEYORA FINAL DESKTOP CALL LAYOUT: You on LEFT, other person on RIGHT.
+   Mobile layout is intentionally left untouched. */
+@media (min-width:901px){
+  .videoStage{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    grid-template-rows:1fr !important;
+    gap:0 !important;
+    padding:0 !important;
+  }
+  .videoStage > .localVideo{
+    grid-column:1 !important;
+    grid-row:1 !important;
+    position:relative !important;
+    inset:auto !important;
+    width:100% !important;
+    height:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    aspect-ratio:auto !important;
+    border-radius:0 !important;
+  }
+  .videoStage > .remoteVideo{
+    grid-column:2 !important;
+    grid-row:1 !important;
+    position:relative !important;
+    inset:auto !important;
+    width:100% !important;
+    height:100% !important;
+  }
+  .videoStage > .localVideo video,
+  .videoStage > .remoteVideo video,
+  .videoStage #cameraPreview{
+    width:100% !important;
+    height:100% !important;
+    object-fit:cover !important;
+    object-position:center !important;
+  }
 }
