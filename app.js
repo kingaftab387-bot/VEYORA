@@ -8,6 +8,7 @@ function getOAuthRedirectUrl(){
   return VEYORA_SITE_URL;
 }
 const PROFILE_TABLE='profiles';
+const PUBLIC_FREE_ONLY=true;
 let sb=null,session=null,selectedGender='',chatAccess='free',selectedPlan='',currentScreen='authScreen';
 const $=s=>document.querySelector(s);
 const screens=['authScreen','profileScreen','matchScreen'];
@@ -268,7 +269,7 @@ async function init(){
  $('#facebookBtn').onclick=()=>oauth('facebook');
 
  $('#profileNext').onclick=saveProfile;$('#startBtn').onclick=startVideo;$('#chatTypeSelect').onchange=e=>setAccess(e.target.value);$('#paidPlanSelect').onchange=e=>{selectedPlan=e.target.value;accountSet('veyoraPlan',selectedPlan);updatePaidPlanUI();};$('#payNowBtn').onclick=openPaymentModal;$('#paymentClose').onclick=closePaymentModal;$('#razorpayPayBtn').onclick=startRazorpayPayment;$('#exitVideo').onclick=exitVideo;$('#nextBtn').onclick=startVideo;
- setAccess(accountGet('veyoraAccess')==='paid'?'paid':'free');
+ setAccess('free');
  $('#settingsBtn').onclick=()=>togglePanel('settingsPanel');
  $('#chatBtn').onclick=toggleChatComposer;
  document.querySelectorAll('[data-close-panel]').forEach(b=>b.onclick=()=>$('#'+b.dataset.closePanel).classList.add('hidden'));
@@ -804,6 +805,7 @@ async function requestMediaAgain(preferredKind=null){
 
 async function startVideo(){
  endingMatch=false;
+ if(PUBLIC_FREE_ONLY) { chatAccess='free'; selectedPlan=''; }
  if(session?.user?.id && !controlReady) await setupUserControlChannel().catch(()=>{});
  clearInterval(partnerWatchTimer);partnerWatchTimer=null;
  if(chatAccess==='paid'&&!selectedPlan){alert('Please choose a paid plan first.');return}

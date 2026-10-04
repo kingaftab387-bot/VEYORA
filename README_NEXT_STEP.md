@@ -1,3 +1,7 @@
+## PUBLIC FREE LAUNCH
+
+This build is configured for Free Chat public launch. Paid Match/payment UI is temporarily hidden/disabled; the existing paid/payment code is retained for later activation.
+
 # VEYORA Next Step
 
 This ZIP now includes Razorpay Standard Checkout with Cloudflare Pages Functions.
