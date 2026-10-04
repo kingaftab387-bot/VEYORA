@@ -937,17 +937,18 @@
 /* FINAL LAPTOP RESPONSIVE FIX — keep the same 50/50 top-bottom video layout as mobile.
    Only desktop/tablet layout is changed; camera, mic, payment and matching logic stay untouched. */
 @media (min-width:901px){
+  /* Laptop/desktop: two equal side-by-side panels. Mobile stays unchanged. */
   .videoStage{
-    grid-template-columns:1fr !important;
-    grid-template-rows:1fr 1fr !important;
+    grid-template-columns:1fr 1fr !important;
+    grid-template-rows:1fr !important;
   }
   .videoStage > .remoteVideo{
     grid-column:1 !important;
     grid-row:1 !important;
   }
   .videoStage > .localVideo{
-    grid-column:1 !important;
-    grid-row:2 !important;
+    grid-column:2 !important;
+    grid-row:1 !important;
   }
 }
 

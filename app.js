@@ -730,6 +730,18 @@ async function clearMyStaleSignals(){
   }catch(e){console.warn('stale signal cleanup',e)}
 }
 
+function updateLocalCameraMirror(track){
+  const preview=$('#cameraPreview');
+  if(!preview) return;
+  const mobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const facing=track?.getSettings?.().facingMode||'';
+  // Self-view is mirrored only for the front/user camera. Rear/environment
+  // camera must stay natural so left/right are not reversed.
+  const shouldMirror = facing === 'environment' ? false : true;
+  preview.style.transform=shouldMirror?'scaleX(-1)':'scaleX(1)';
+  preview.dataset.cameraFacing=facing || (mobile?'user':'desktop');
+}
+
 async function requestMediaAgain(preferredKind=null){
   if(!navigator.mediaDevices?.getUserMedia) {
     $('#callHint').textContent='Camera and microphone are not supported in this browser.';
@@ -781,6 +793,7 @@ async function requestMediaAgain(preferredKind=null){
     micOn=stream.getAudioTracks().some(t=>t.enabled); camOn=stream.getVideoTracks().some(t=>t.enabled);
     const preview=$('#cameraPreview');
     preview.srcObject=stream; preview.muted=true; preview.autoplay=true; preview.playsInline=true;
+    updateLocalCameraMirror(stream.getVideoTracks?.()[0]);
     preview.setAttribute('autoplay',''); preview.setAttribute('muted',''); preview.setAttribute('playsinline','');
     preview.onloadedmetadata=()=>preview.play().catch(()=>{});
     preview.oncanplay=()=>preview.play().catch(()=>{});
@@ -901,6 +914,7 @@ async function startVideo(){
      camOn=!!stream.getVideoTracks().some(t=>t.readyState==='live');
      const preview=$('#cameraPreview');
      preview.srcObject=stream;preview.muted=true;preview.autoplay=true;preview.playsInline=true;
+     updateLocalCameraMirror(stream.getVideoTracks?.()[0]);
      try{await preview.play()}catch(e){}
      $('#micBtn').textContent=micOn?'🎙️':'🔇';$('#micBtn').classList.toggle('disabled',!micOn);
      $('#camBtn').textContent=camOn?'📹':'🚫';$('#camBtn').classList.toggle('disabled',!camOn);
@@ -1520,6 +1534,7 @@ async function switchCamera(){
 
     const newTrack=nextStream?.getVideoTracks?.()[0];
     if(!newTrack) throw new Error('No replacement camera available');
+    updateLocalCameraMirror(newTrack);
 
     // Replace WebRTC sender before stopping the old track so the remote side
     // keeps receiving video during the switch.
