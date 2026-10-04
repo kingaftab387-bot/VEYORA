@@ -1,4 +1,4 @@
-const SUPABASE_URL='https://veqmnbradfxqkykwztmg.supabase.co';
+const SUPABASE_URL='https://mnjsauvlrzahaypuviya.supabase.co';
 const SUPABASE_KEY='sb_publishable_F5hYSHT8ECBX6V7E_M3uVQ_80iXDOZh';
 const VEYORA_SITE_URL='https://veyora-chat.pages.dev/';
 // Production OAuth must never redirect to a local development address.
@@ -1579,7 +1579,7 @@ async function logout(){
   if(userControlChannel){try{await userControlChannel.unsubscribe()}catch(e){} userControlChannel=null; controlReady=false;}
   // Log out locally first so a slow/blocked Wi-Fi connection cannot leave the UI stuck.
   session=null;
-  try{localStorage.removeItem('sb-veqmnbradfxqkykwztmg-auth-token')}catch(e){}
+  try{localStorage.removeItem('sb-mnjsauvlrzahaypuviya-auth-token')}catch(e){}
   try{localStorage.removeItem('veyoraAuthSession')}catch(e){}
   if(sb){try{await Promise.race([sb.auth.signOut({scope:'local'}),new Promise(r=>setTimeout(r,1200))])}catch(e){}}
   // Keep saved profile/plan/Veyora ID so Page 2 stays skipped after the next login.

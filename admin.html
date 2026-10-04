@@ -9,7 +9,7 @@
 <div id="dashboard" class="hidden"><div class="grid" id="stats"></div><div class="card"><div class="top"><h2>Reports</h2><button id="refresh" class="btn muted">Refresh</button></div><div id="reports"></div></div><div class="card"><h3>Admin setup</h3><p class="small">For first-time setup, add your own Supabase Auth user UUID to <code>public.admin_users</code> using the SQL comment at the bottom of MATCHMAKING_REQUIRED.sql. Do not put service-role keys in this page.</p></div></div>
 </div>
 <script>
-const URL='https://veqmnbradfxqkykwztmg.supabase.co',KEY='sb_publishable_F5hYSHT8ECBX6V7E_M3uVQ_80iXDOZh';
+const URL='https://mnjsauvlrzahaypuviya.supabase.co',KEY='sb_publishable_F5hYSHT8ECBX6V7E_M3uVQ_80iXDOZh';
 const sb=supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const $=s=>document.querySelector(s); function say(x){$('#msg').textContent=x}
 async function check(){const {data:{session}}=await sb.auth.getSession(); if(!session){$('#login').classList.remove('hidden');return;} $('#who').textContent=session.user.email||session.user.id; $('#logout').classList.remove('hidden'); try{const {data,error}=await sb.rpc('veyora_is_admin'); if(error)throw error; if(!data)throw new Error('This account is not an admin.'); $('#login').classList.add('hidden');$('#dashboard').classList.remove('hidden');await load();}catch(e){say(e.message||'Admin access denied');}}
